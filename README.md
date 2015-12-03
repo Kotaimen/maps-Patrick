@@ -1,2 +1,3 @@
-# maps-Patrick
-SpongeBob's Best Friend (Also, USA terrain map design)
+# Patrick
+
+SpongeBob's best friend, (Also, USA terrain map design).
