@@ -55,3 +55,15 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Pycharm
+.idea/
+
+# Docker compose logs
+log/
+
+# Carto temporary files and resources
+map_gallery/carto/data/
+map_gallery/carto/font/
+map_gallery/carto/*.mml
+map_gallery/carto/*.xml
