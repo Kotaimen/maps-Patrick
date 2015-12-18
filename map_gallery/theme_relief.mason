@@ -1,0 +1,149 @@
+# -*- python -*-
+# -*- encoding: utf-8 -*-
+
+version = 'mk1'
+
+title = 'Relief Map'
+name = 'reliefmap_%s' % version
+
+imageformat = 'WEBP'
+extension = '.webp'
+parameters = dict(quality=94)
+
+pyramid = dict(
+        stride=1,
+        geogcs='WGS84',
+        projcs='EPSG:3857',
+        levels=range(4, 18),
+)
+
+metadata = dict(
+        title=title,
+        version='Mark I',
+        abstract='Relief map test using simple relief renderer.',
+        attribution='Data: USGS',
+        origin_zoom=9,
+        origin=(-121.7719958, 46.8550861),
+)
+
+THEME = dict(
+        name=name,
+        metadata=metadata,
+        schemas=[]
+)
+
+storage = dict(
+        prototype='s3.metatile',
+        stride=8,
+        bucket='stonemason-tokyo',
+        key_mode='hilbert',
+        prefix='tilestorage/Patrick/%s/reliefmap' % version
+)
+
+
+class Selector(object):
+    RESOLUTIONS = [
+        140000.,
+        56000.,
+        28000.,
+        14000.,
+        7000.,
+        3500.,
+        1820.,
+        840.,
+        420.,
+        210.,
+        112.,
+        56.,
+        28.,
+        14.,
+        7.,
+        3.5000,
+        1.4000,
+        0.7000,
+        0.4200,
+        0.2100,
+        0.1400,
+        0.0700,
+        0.0280,
+    ]
+
+    def __call__(self, resolution):
+        raise NotImplementedError
+
+
+class ZFactorSelector(Selector):
+    def __call__(self, resolution):
+        resx, resy = resolution
+        if resx > self.RESOLUTIONS[5]:
+            z = 50
+        if resx > self.RESOLUTIONS[6]:
+            z = 6
+        if resx > self.RESOLUTIONS[7]:
+            z = 3
+        elif resx > self.RESOLUTIONS[8]:
+            z = 2
+        elif resx > self.RESOLUTIONS[9]:
+            z = 1.8
+        elif resx > self.RESOLUTIONS[10]:
+            z = 1.5
+        elif resx > self.RESOLUTIONS[11]:
+            z = 1.25
+        else:
+            z = 1
+
+        return z
+
+
+class ReliefIndexSelector(Selector):
+    def __call__(self, resolution):
+        # import logging
+        # logging.debug('resolution:%r,%r'%resolution)
+        resx, resy = resolution
+        if resx > self.RESOLUTIONS[7]:
+            index = 'raster+s3http://stonemason-tokyo/geodata/Production/SRTM30PLUS/srtm30?indexname=index.shp'
+        elif resx > self.RESOLUTIONS[12]:
+            index = 'raster+s3http://stonemason-tokyo/geodata/Production/Patrick?indexname=ned30m.shp'
+        elif resx > self.RESOLUTIONS[14]:
+            index = 'raster+s3http://stonemason-tokyo/geodata/Production/Patrick?indexname=ned10m.shp'
+        else:
+            index = 'raster+s3http://stonemason-tokyo/geodata/Production/Patrick?indexname=ned3m.shp'
+        return index
+
+
+schema = dict(
+
+        tag=extension,
+
+        pyramid=pyramid,
+
+        maptype='image',
+        tileformat=dict(format=imageformat,
+                        parameters=parameters),
+        storage=storage,
+
+        renderer={
+            'prototype': 'image',
+            'layers': {
+
+                'root': {
+                    'prototype': 'relief.swiss',
+                    'datasource': ReliefIndexSelector(),
+                    'scale': 1,
+                    'buffer': 8,
+                    'zfactor': ZFactorSelector(),
+                    'azimuth': 315,
+                    'altitude': (35, 40, 81),
+                    'high_relief_cutoff': 0.68,
+                    'high_relief_gain': 7.1,
+                    'low_relief_cutoff': 0.72,
+                    'low_relief_gain': 1.4,
+                    'height_mask_range': (0, 1800),
+                    'blend': (0.65, 0.75),
+                }
+
+            }
+        }
+)
+
+THEME['schemas'].append(schema)
