@@ -1,0 +1,42 @@
+# Rerverse proxy
+reverse-proxy:
+  image: nginx
+  ports:
+    - "80:80"
+  links:
+    - stonemason
+  volumes:
+    - ./etc/reverse-proxy:/etc/nginx:ro
+    - ./log/reverse-proxy:/var/log/nginx
+
+# Tile map service
+stonemason:
+  image: kotaimen/stonemason:0.3.0.dev0
+  command: tileserver --bind=0.0.0.0:80
+  links:
+    - memcache
+    - cache-proxy
+  volumes:
+    - ./map_gallery:/var/lib/stonemason/map_gallery:ro
+    - /mnt/stonemason:/tmp/stonemason
+  environment:
+#    - STONEMASON_DEBUG=2
+    - STONEMASON_VERBOSE=1
+    - STONEMASON_CACHE=memcache:11211
+#    - STONEMASON_READ_ONLY=1
+#    - STONEMASON_WORKERS=16
+    - STONEMASON_GALLERY=/var/lib/stonemason/map_gallery
+    - http_proxy=http://cache-proxy:3128
+
+# Tile Cache
+memcache:
+  image: memcached
+  command: -m 512
+
+# Cache proxy
+cache-proxy:
+  image: nginx
+  volumes:
+    - ./etc/cache-proxy:/etc/nginx:ro
+    - ./log/cache-proxy:/var/log/nginx
+    - /mnt/nginx:/var/spool/nginx/cache
