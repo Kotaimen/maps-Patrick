@@ -1,0 +1,14 @@
+data:
+  image: nanook/data-patrick
+  entrypoint: ./docker_run.sh
+  environment:
+    - PGHOST=db
+    - PGUSER=postgres
+    - PGDATABASE=Patrick_test
+  links:
+    - db
+  volumes:
+    - ./naturalearth:/tmp/naturalearth
+db:
+  image: nanook/postgresql-9.3-postgis-2.1
+
