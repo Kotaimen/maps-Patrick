@@ -3,26 +3,19 @@
 
 version = 'mark1'
 
-title = 'Relief Map'
-name = 'reliefmap_%s' % version
+title = 'Hillshading'
+name = 'hillshading_%s' % version
 
 imageformat = 'WEBP'
 extension = '.webp'
-parameters = dict(quality=94)
-
-pyramid = dict(
-        stride=1,
-        geogcs='WGS84',
-        projcs='EPSG:3857',
-        levels=range(4, 18),
-)
+parameters = dict(quality=96)
 
 metadata = dict(
         title=title,
         version='Mark I',
-        abstract='SwissRelief',
-        attribution='Data: USGS',
-        origin_zoom=9,
+        abstract='Patrick USA Hillshading',
+        attribution='Map Design: K&R',
+        origin_zoom=7,
         origin=(-121.7719958, 46.8550861),
 )
 
@@ -30,14 +23,6 @@ THEME = dict(
         name=name,
         metadata=metadata,
         schemas=[]
-)
-
-storage = dict(
-        prototype='s3.metatile',
-        stride=8,
-        bucket='stonemason-tokyo',
-        key_mode='hilbert',
-        prefix='tilestorage/Patrick/%s/reliefmap' % version
 )
 
 
@@ -111,22 +96,33 @@ class ReliefIndexSelector(Selector):
         return index
 
 
-schema = dict(
+storage = dict(
+        prototype='s3.metatile',
+        stride=8,
+        bucket='stonemason-tokyo',
+        key_mode='hilbert',
+        prefix='tilestorage/Patrick/%s/hillshading' % version
+)
 
+schema = dict(
         tag=extension,
 
-        pyramid=pyramid,
+        pyramid=dict(
+                stride=1,
+                geogcs='WGS84',
+                projcs='EPSG:3857',
+                levels=range(4, 17),
+        ),
 
         maptype='image',
-        tileformat=dict(format=imageformat,
-                        parameters=parameters),
+        tileformat=dict(format=imageformat, parameters=parameters),
         storage=storage,
-
         renderer={
+
             'prototype': 'image',
             'layers': {
 
-                'root': {
+                'reliefmap': {
                     'prototype': 'relief.swiss',
                     'datasource': ReliefIndexSelector(),
                     'scale': 1,
@@ -138,13 +134,56 @@ schema = dict(
                     'high_relief_gain': 7.1,
                     'low_relief_cutoff': 0.72,
                     'low_relief_gain': 1.4,
-                    'height_mask_range': (0, 1800),
+                    'height_mask_range': (0, 1850),
                     'blend': (0.65, 0.75),
-                }
+                },
+
+                'colormap': {
+                    'prototype': 'relief.color',
+                    'datasource': 'raster+s3http://stonemason-tokyo/geodata/Production/NaturalEarth/RASTER10M/NE1_HR_LC?indexname=index.shp',
+                    'buffer': 8,
+                },
+
+                # 'overlay': {
+                #     'prototype': 'mapnik',
+                #     'style_sheet': '{{ theme_root }}/carto/patrick.xml',
+                #     'base_path': '{{ theme_root }}/carto',
+                #     'default_scale': scale,
+                #     'buffer_size': 256 * scale
+                # },
+
+                'root': {
+                    'prototype': 'imagemagick',
+                    'sources': [
+                        'reliefmap',
+                        'colormap',
+                        # 'overlay'
+                    ],
+                    'command': '''
+                    (
+                        # simulate sun illulmation by applying a color map
+                        <<reliefmap>> -set colorspace RGB
+                        ( {{ theme_root }}/carto/res/Stage/tint.png ) -clut
+                    )
+
+                    ( <<colormap>>
+                        -modulate 100,72,96
+                        -brightness-contrast -8%x-26%
+                        -set colorspace RGB
+                    ) -compose Overlay -composite
+
+                    # compress tonal range
+                    +level 4%,98%,1
+                    -sharpen 0.5
+
+                    # <<overlay>> -compose Over -composite
+
+                    -define png:color-type=6
+                '''
+                },
 
             }
         }
-
 )
 
 THEME['schemas'].append(schema)
