@@ -1,13 +1,13 @@
 # Renderer, attached to tileserver network
 renderer:
-  image: kotaimen/stonemason:0.3.0.dev0
+  image: kotaimen/stonemason:0.3.0rc1
   entrypoint: ./run_render.sh
   working_dir: /var/lib/stonemason/render
   volumes:
     - ./map_gallery:/var/lib/stonemason/map_gallery:ro
     - ./render:/var/lib/stonemason/render:ro
     - ./log/renderer:/tmp/render
-    - /mnt/stonemason:/tmp/stonemason
+    - /var/run/shm/stonemason:/tmp/stonemason
   environment:
     - STONEMASON_GALLERY=/var/lib/stonemason/map_gallery
     - http_proxy=http://cache-proxy:3128
