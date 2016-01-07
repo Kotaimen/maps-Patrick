@@ -1,16 +1,22 @@
 PYTHON=python
 CARTO=carto
 
-all: carto/res/Stage/tint.png carto/project.mml carto/patrick.xml
-
+all: carto/res/Stage/tint.png carto/patrick.xml
+.PHONY: all
+	
 clean:
-	$(RM) carto/res/Stage/tint.png carto/project.mml carto/patrick.xml
+	$(RM) carto/res/Stage/tint.png 
+	$(RM) carto/project.mml carto/patrick.xml
+.PHONY: clean
 
 carto/res/Stage/tint.png:
-	convert -size 30x256 gradient: -rotate 90  -interpolate Bicubic \( +size xc:#334466  xc:grey50 xc:#f7ba9d +append \) -clut $@
+	convert -size 30x256 gradient: -rotate 90 -interpolate Bicubic \( +size xc:#334466  xc:grey50 xc:#f7ba9d +append \) -clut $@
 
-carto/project.mml: carto/project.yaml
+#VPATH = carto
+
+%.mml : %.yaml
 	${PYTHON} -c 'import yaml, json; print(json.dumps(yaml.load(open("$<")), indent=2))' > $@
 
-carto/patrick.xml: carto/project.mml carto/*.mss
-	${CARTO} carto/project.mml > $@
+%.xml : carto/project.mml carto/*.mss ../patch_carto.py
+	${CARTO} $< > $@
+	${PYTHON} ../patch_carto.py $@
