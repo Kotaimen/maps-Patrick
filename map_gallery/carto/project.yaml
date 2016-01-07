@@ -1,0 +1,307 @@
+name: Patrick
+scale: 1
+metatile: 2
+bounds: &world
+  - -180
+  - -85.05112877980659
+  - 180
+  - 85.05112877980659
+center:
+  - -121.7719958
+  - 46.8550861
+  - 5
+format: png24
+interactivity: false
+minzoom: 4
+maxzoom: 17
+srs: "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
+
+Stylesheet:
+  - "palette.mss"
+  - "ocean.mss"
+  - "water-feature.mss"
+  - "boundary.mss"
+
+_parts:
+  # Extents are used for tilemill, and don't actually make it to the generated XML
+  extents: &extents
+    extent: [-20037508.34,-20037508.34,20037508.34,20037508.34]
+    srs-name: "EPSG:3857"
+    srs: "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
+
+  extents84: &extents84
+    extent: *world
+    srs-name: "WGS84"
+    srs: "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+    
+  ne2: &ne2
+    type: "postgis"
+    dbname: "naturalearth2"
+    srid: "4326"
+    extent: *world
+    key_field: "gid"
+    geometry_field: "geometry"
+
+  osm: &osm
+    type: "postgis"
+    dbname: "stonemason_osm"
+    srid: "3857"
+    extent: [-20037508.34,-20037508.34,20037508.34,20037508.34]
+    key_field: "id"
+    geometry_field: "geometry"
+
+Layer:
+
+  - id: "ocean_10m"
+    name: "ocean_10m"
+    class: "ocean"
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+       <<: *ne2
+       table: ne_10m_physical.ne_10m_ocean
+    properties: {}
+    advanced: {}
+
+  - id: "ocean"
+    name: "ocean"
+    class: "ocean"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "physical.osm_ocean"
+    properties: {}
+    advanced: {}
+
+  - id: "river_10m"
+    name: "river_10m"
+    class: "river"
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_rivers_lake_centerlines"
+    properties: {}
+    advanced: {}
+
+  - id: "river_na_10m"
+    name: "river_na_10m"
+    class: "river"
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_rivers_north_america"
+    properties: {}
+    advanced: {}
+
+  - id: "waterway_gen1"
+    name: "waterway_gen1"
+    class: "river"
+    geometry: "linestring"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "physical.osm_waterway_gen1"
+    properties: {}
+    advanced: {}
+
+  - id: "waterway_gen0"
+    name: "waterway_gen0"
+    class: "river"
+    geometry: "linestring"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "physical.osm_waterway_gen0"
+    properties: {}
+    advanced: {}
+
+  - id: "waterway"
+    name: "waterway"
+    class: "river"
+    geometry: "linestring"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "physical.osm_waterway"
+    properties: {}
+    advanced: {}
+
+  - id: "lake_10m"
+    name: "lake_10m"
+    class: "waterbody"
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_lakes"
+    properties: {}
+    advanced: {}
+
+  - id: "waterbody_gen1"
+    name: "waterbody_gen1"
+    class: "waterbody"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "physical.osm_waterbody_gen1"
+    properties: {}
+    advanced: {}
+
+  - id: "waterbody_gen0"
+    name: "waterbody_gen0"
+    class: "waterbody"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "physical.osm_waterbody_gen0"
+    properties: {}
+    advanced: {}
+
+  - id: "waterbody"
+    name: "waterbody"
+    class: "waterbody"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "physical.osm_waterbody"
+    properties: {}
+    advanced: {}
+
+  - id: "park_10m"
+    name: "park_10m"
+    class: ""
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_cultural.ne_10m_parks_and_protected_lands_area"
+    properties: {}
+    advanced: {}
+
+  - id: "admin1_boundary_10m"
+    name: "admin1_boundary_10m"
+    class: ""
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_cultural.ne_10m_admin_1_states_provinces_lines_shp"
+    properties: {}
+    advanced: {}
+
+  - id: "admin0_boundary_10m"
+    name: "admin0_boundary_10m"
+    class: ""
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_cultural.ne_10m_admin_0_boundary_lines_land"
+    properties: {}
+    advanced: {}
+
+  - id: "label_admin0"
+    name: "label_admin0"
+    class: ""
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      file: "data/admin-0-labels-z6.shp"
+      type: "shape"
+    properties: {}
+    advanced: {}
+
+  - id: "label_admin1"
+    name: "label_admin1"
+    class: ""
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      file: "data/admin-1-labels-z7.shp"
+      type: "shape"
+    properties: {}
+    advanced: {}
+
+  - id: "label_park_10m"
+    name: "label_park_10m"
+    class: ""
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_cultural.ne_10m_parks_and_protected_lands_area"
+    properties: {}
+    advanced: {}
+
+  - id: "label_admin1_boundary"
+    name: "label_admin1_boundary"
+    class: ""
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_cultural.ne_10m_admin_1_states_provinces_shp"
+    properties: {}
+    advanced: {}
+
+  - id: "place_static"
+    name: "place_static"
+    class: ""
+    geometry: "point"
+    <<: *extents
+    Datasource:
+      file: "data/place-point-labels.shp"
+      type: "shape"
+    properties: {}
+    advanced: {}
+
+  - id: "label_lake_10m"
+    name: "label_lake_10m"
+    class: ""
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_lakes"
+    properties: {}
+    advanced: {}
+
+
+  - id: "label_river_10m"
+    name: "label_river_10m"
+    class: ""
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_rivers_lake_centerlines"
+    properties: {}
+    advanced: {}
+
+  - id: "label_river_na_10m"
+    name: "label_river_na_10m"
+    class: ""
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_rivers_north_america"
+    properties: {}
+    advanced: {}
+
+  - id: "label_elevation"
+    name: "label_elevation"
+    class: ""
+    geometry: "point"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "(SELECT * FROM physical.osm_elevation ) AS foo"
+    properties: {}
+    advanced: {}

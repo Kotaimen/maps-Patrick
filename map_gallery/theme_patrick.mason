@@ -1,0 +1,59 @@
+# -*- python -*-
+# -*- encoding: utf-8 -*-
+
+version = 'mark1'
+
+title = 'Patrick'
+name = 'patrick_%s' % version
+
+imageformat = 'PNG'
+extension = '.png'
+parameters = dict(optimized=True)
+
+metadata = dict(
+    title=title,
+    version='Mark I',
+    abstract='',
+    attribution='',
+    origin_zoom=8,
+    origin=(-121.7719958, 46.8550861),
+
+)
+
+THEME = dict(
+    name=name,
+    metadata=metadata,
+    schemas=[]
+)
+
+
+for scale in [1, 2]:
+
+    tag = '' if (scale == 1) else ('@%dx' % scale)
+
+    schema = dict(
+        tag='%s%s' % (tag, extension),
+        pyramid=dict(
+            stride=1,
+            geogcs='WGS84',
+            projcs='EPSG:3857',
+            levels=range(4, 17 + scale),
+        ),
+        maptype='image',
+        tileformat=dict(format=imageformat, parameters=parameters),
+        storage=None,
+        renderer={
+            'prototype': 'image',
+            'layers': {
+                'root': {
+                    'prototype': 'mapnik',
+                    'style_sheet': '{{ theme_root }}/carto/%s.xml' % name,
+                    'base_path': '{{ theme_root }}/carto',
+                    'default_scale': scale,
+                    'buffer_size': 256 * scale
+                }
+            }
+        }
+    )
+
+    THEME['schemas'].append(schema)

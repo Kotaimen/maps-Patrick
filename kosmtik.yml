@@ -1,0 +1,22 @@
+# Kosmitk carto map editor
+kosmtik:
+  image: kotaimen/kosmtik
+  command: /var/lib/stonemason/map_gallery/carto/project.yaml
+  links:
+    - pgbouncer
+  environment:
+    - PGHOST=pgbouncer
+    - PGPORT=6432
+    - PGUSER=postgres
+    - PGPASSWORD=123456
+  volumes:
+    - ./map_gallery:/var/lib/stonemason/map_gallery:ro
+  ports:
+    - "80:6789"
+
+# pgbouncer
+pgbouncer:
+  image: kotaimen/pgbouncer
+  volumes:
+    - ./etc/pgbouncer:/etc/pgbouncer:ro
+    - ./log/postgresql:/var/log/postgresql
