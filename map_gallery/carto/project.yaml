@@ -1,3 +1,6 @@
+#
+# Map property
+#
 name: Patrick
 scale: 1
 metatile: 2
@@ -16,14 +19,21 @@ minzoom: 4
 maxzoom: 17
 srs: "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
 
+
+
+
 Stylesheet:
   - "palette.mss"
   - "ocean.mss"
   - "water-feature.mss"
+  - "road.mss"
   - "boundary.mss"
+  - "label-admin.mss"
+  - "label-place.mss"
+
+
 
 _parts:
-  # Extents are used for tilemill, and don't actually make it to the generated XML
   extents: &extents
     extent: [-20037508.34,-20037508.34,20037508.34,20037508.34]
     srs-name: "EPSG:3857"
@@ -50,8 +60,15 @@ _parts:
     key_field: "id"
     geometry_field: "geometry"
 
+
+
+
+
 Layer:
 
+  #
+  # Ocean
+  #
   - id: "ocean_10m"
     name: "ocean_10m"
     class: "ocean"
@@ -74,6 +91,10 @@ Layer:
     properties: {}
     advanced: {}
 
+
+  #
+  # Water feature
+  #
   - id: "river_10m"
     name: "river_10m"
     class: "river"
@@ -173,6 +194,10 @@ Layer:
     properties: {}
     advanced: {}
 
+  #
+  # Park boundary
+  #
+
   - id: "park_10m"
     name: "park_10m"
     class: ""
@@ -183,6 +208,75 @@ Layer:
       table: "ne_10m_cultural.ne_10m_parks_and_protected_lands_area"
     properties: {}
     advanced: {}
+
+
+  #
+  # Road
+  #
+
+
+  - id: "road_gen1"
+    name: "road_gen1"
+    class: "road"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "(SELECT * FROM cultural.osm_road_gen1_view) AS foo"
+    properties: {}
+    advanced: {}
+
+  - id: "road_gen0_tunnel"
+    name: "road_gen0_tunnel"
+    class: "road tunnel"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "(SELECT * FROM cultural.osm_road_gen0_view WHERE is_tunnel=1) AS foo"
+    properties:
+      group-by: "layer"
+    advanced: {}
+
+  - id: "road_gen0"
+    name: "road_gen0"
+    class: "road"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "(SELECT * FROM cultural.osm_road_gen0_view) AS foo"
+    properties:
+      group-by: "layer"
+    advanced: {}
+
+  - id: "road_tunnel"
+    name: "road_tunnel"
+    class: "road tunnel"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "(SELECT * FROM cultural.osm_road_view WHERE is_tunnel=1) AS foo"
+    properties:
+      group-by: "layer"
+    advanced: {}
+
+  - id: "road"
+    name: "road"
+    class: "road"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "(SELECT * FROM cultural.osm_road_view WHERE is_tunnel=0) AS foo"
+    properties:
+      group-by: "layer"
+    advanced: {}
+
+  #
+  # Admin boundary
+  #
 
   - id: "admin1_boundary_10m"
     name: "admin1_boundary_10m"
@@ -206,9 +300,15 @@ Layer:
     properties: {}
     advanced: {}
 
+
+
+  #
+  # Labels
+  #
+
   - id: "label_admin0"
     name: "label_admin0"
-    class: ""
+    class: "label admin"
     geometry: "polygon"
     <<: *extents
     Datasource:
@@ -219,7 +319,7 @@ Layer:
 
   - id: "label_admin1"
     name: "label_admin1"
-    class: ""
+    class: "label admin"
     geometry: "polygon"
     <<: *extents
     Datasource:
@@ -227,32 +327,32 @@ Layer:
       type: "shape"
     properties: {}
     advanced: {}
-
-  - id: "label_park_10m"
-    name: "label_park_10m"
-    class: ""
-    geometry: "polygon"
-    <<: *extents84
-    Datasource:
-      <<: *ne2
-      table: "ne_10m_cultural.ne_10m_parks_and_protected_lands_area"
-    properties: {}
-    advanced: {}
-
-  - id: "label_admin1_boundary"
-    name: "label_admin1_boundary"
-    class: ""
-    geometry: "polygon"
-    <<: *extents84
-    Datasource:
-      <<: *ne2
-      table: "ne_10m_cultural.ne_10m_admin_1_states_provinces_shp"
-    properties: {}
-    advanced: {}
-
-  - id: "place_static"
-    name: "place_static"
-    class: ""
+#
+#  - id: "label_park_10m"
+#    name: "label_park_10m"
+#    class: ""
+#    geometry: "polygon"
+#    <<: *extents84
+#    Datasource:
+#      <<: *ne2
+#      table: "ne_10m_cultural.ne_10m_parks_and_protected_lands_area"
+#    properties: {}
+#    advanced: {}
+#
+#  - id: "label_admin1_boundary"
+#    name: "label_admin1_boundary"
+#    class: ""
+#    geometry: "polygon"
+#    <<: *extents84
+#    Datasource:
+#      <<: *ne2
+#      table: "ne_10m_cultural.ne_10m_admin_1_states_provinces_shp"
+#    properties: {}
+#    advanced: {}
+#
+  - id: "label_place_static"
+    name: "label_place_static"
+    class: "label place "
     geometry: "point"
     <<: *extents
     Datasource:
@@ -261,47 +361,47 @@ Layer:
     properties: {}
     advanced: {}
 
-  - id: "label_lake_10m"
-    name: "label_lake_10m"
-    class: ""
-    geometry: "polygon"
-    <<: *extents84
-    Datasource:
-      <<: *ne2
-      table: "ne_10m_physical.ne_10m_lakes"
-    properties: {}
-    advanced: {}
-
-
-  - id: "label_river_10m"
-    name: "label_river_10m"
-    class: ""
-    geometry: "linestring"
-    <<: *extents84
-    Datasource:
-      <<: *ne2
-      table: "ne_10m_physical.ne_10m_rivers_lake_centerlines"
-    properties: {}
-    advanced: {}
-
-  - id: "label_river_na_10m"
-    name: "label_river_na_10m"
-    class: ""
-    geometry: "linestring"
-    <<: *extents84
-    Datasource:
-      <<: *ne2
-      table: "ne_10m_physical.ne_10m_rivers_north_america"
-    properties: {}
-    advanced: {}
-
-  - id: "label_elevation"
-    name: "label_elevation"
-    class: ""
-    geometry: "point"
-    <<: *extents
-    Datasource:
-      <<: *osm
-      table: "(SELECT * FROM physical.osm_elevation ) AS foo"
-    properties: {}
-    advanced: {}
+#  - id: "label_lake_10m"
+#    name: "label_lake_10m"
+#    class: ""
+#    geometry: "polygon"
+#    <<: *extents84
+#    Datasource:
+#      <<: *ne2
+#      table: "ne_10m_physical.ne_10m_lakes"
+#    properties: {}
+#    advanced: {}
+#
+#
+#  - id: "label_river_10m"
+#    name: "label_river_10m"
+#    class: ""
+#    geometry: "linestring"
+#    <<: *extents84
+#    Datasource:
+#      <<: *ne2
+#      table: "ne_10m_physical.ne_10m_rivers_lake_centerlines"
+#    properties: {}
+#    advanced: {}
+#
+#  - id: "label_river_na_10m"
+#    name: "label_river_na_10m"
+#    class: ""
+#    geometry: "linestring"
+#    <<: *extents84
+#    Datasource:
+#      <<: *ne2
+#      table: "ne_10m_physical.ne_10m_rivers_north_america"
+#    properties: {}
+#    advanced: {}
+#
+#  - id: "label_elevation"
+#    name: "label_elevation"
+#    class: ""
+#    geometry: "point"
+#    <<: *extents
+#    Datasource:
+#      <<: *osm
+#      table: "(SELECT * FROM physical.osm_elevation ) AS foo"
+#    properties: {}
+#    advanced: {}

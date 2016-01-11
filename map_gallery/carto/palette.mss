@@ -1,31 +1,88 @@
 //
-// Colors
+// Physical Feature
 //
-@land:              #8f998e;
+@land:              #B0AE9C;
 @water:             #88aabb;
 @river:             #2288bb;
 
-@label-water:       #0B5F80;
-@label-place:       #1f1414;
-@label-park:        #1c381c;
-@label-physical:    #552211;
 
-@boundary-line:     #c4c4c4;
-@boundary-casing:   black;
-@boundary-opacity:  0.3%;
+//
+// Boundary
+//
+@boundary-line:     #cccccc;
+@boundary-casing:   #444444;
+@boundary-opacity:  0.33;
 
-@label-admin:   #e0ddd5;
-@halo-admin:    #120c00;
+//
+// Road
+//
+@road-dash:         8, 3;
+@casing:            fadeout(#C2C4BE, 33%);
 
-@font-place:    "Roboto Condensed Regular";
-@font-admin:    "Roboto Bold";
-@font-physical: "Roboto Medium Italic";
-@font-water:    "Roboto Medium";
-@font-park:     "Roboto Condensed Regular";
+@ferry-line:        #1e78a5;
 
+@motorway-line:     @motorway-fill;
+@motorway-fill:     #737780;
+@motorway-casing:   @casing;
+@motorway-link:     @motorway-fill;
+
+@primary-line:      #737780;
+@primary-fill:   	#80848d;
+@primary-casing: 	@casing;
+
+@secondary-line:    @primary-line;
+@secondary-fill:    @primary-fill;
+@secondary-casing:  @casing;
+
+@minor-line:        @primary-line;
+@minor-fill:        @primary-fill;
+@minor-casing:      @casing;
+
+@path-line:         @primary-line;
+@path-fill:         #888e8b;
+@path-casing:       @casing;
+
+@trail-line:        @path-line;
+@trail-fill:        @path-fill;
+@trail-casing:      @casing;
+
+@rail-line:         #667777;
+@rail-fill:         #bbbbbb;
+@rail-casing:       #bbbbbb;
+
+//
+// Label
+//
+@halo-radius-default:       1;
+
+@label-admin:               @boundary-line;
+@label-admin-halo:          @boundary-casing;
+@label-admin-halo-opacity:  @boundary-opacity;
+
+@label-place:               #ddccaa;
+@label-place-halo:          #333333;
+@label-place-halo-opacity:  0.33;
+
+@label-water:               #0B5F80;
+@label-park:                #1c381c;
+@label-physical:            #552211;
+
+//
+// Fonts
+//
+@font-place:        "Roboto Condensed Regular";
+@font-admin:        "Roboto Medium";
+@font-physical:     "Roboto Medium Italic";
+@font-water:        "Roboto Medium Italic";
+@font-poi:          "Roboto Medium Italic";
+
+
+//
+// Background
+//
 Map {
     background-image: url('res/real-hillshading-1.png');
     background-color: @land;
-    font-directory: url('font');
+    font-directory: url('fonts');
 //    buffer-size: 256;
 }
