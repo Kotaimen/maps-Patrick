@@ -16,6 +16,7 @@ stonemason:
   links:
     - memcache
     - cache-proxy
+    - pgbouncer
   volumes:
     - ./map_gallery:/var/lib/stonemason/map_gallery:ro
     - /var/run/shm/stonemason:/tmp/stonemason
@@ -24,8 +25,12 @@ stonemason:
     - STONEMASON_VERBOSE=1
     - STONEMASON_CACHE=memcache:11211
 #    - STONEMASON_READ_ONLY=1
-    - STONEMASON_WORKERS=8
+#    - STONEMASON_WORKERS=8
     - STONEMASON_GALLERY=/var/lib/stonemason/map_gallery
+    - PGHOST=pgbouncer
+    - PGPORT=6432
+    - PGUSER=postgres
+    - PGPASSWORD=123456
     - http_proxy=http://cache-proxy:3128
 
 # Tile Cache
@@ -40,3 +45,10 @@ cache-proxy:
     - ./etc/cache-proxy:/etc/nginx:ro
     - ./log/cache-proxy:/var/log/nginx
     - /var/run/shm/nginx:/var/spool/nginx/cache
+
+# pgbouncer
+pgbouncer:
+  image: kotaimen/pgbouncer
+  volumes:
+    - ./etc/pgbouncer:/etc/pgbouncer:ro
+    - ./log/postgresql:/var/log/postgresql
