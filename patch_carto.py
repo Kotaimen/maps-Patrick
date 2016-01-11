@@ -145,8 +145,11 @@ def patch_layer_cache_features(root):
 
 def patch_map(root):
     """Patch map attributes"""
-    para = root.find('Parameters')
-    root.remove(para)
+    try:
+        del root.attrib['background-color']
+        del root.attrib['background-image']
+    except KeyError:
+        pass
 
 
 def patch_postgis(root):
@@ -209,6 +212,24 @@ def patch_layer_scale_denominator(root):
     print('Patched scale denominator on %d layers.' % count)
 
 
+def patch_layer_buffer_size(root, buffer=32):
+    """Overwrite non-label/shield layer buffer size, greatly speedup rendering
+
+    <Style>
+        <Rule>
+            <MaxScaleDenominator>
+            <MinScaleDenominator>
+
+    <Layer>
+    """
+    count = 0
+    for layer in root.xpath('./Layer'):
+        if layer.attrib['name'].startswith('label_'):
+            count += 1
+            layer.attrib['buffer-size'] = '%d' % buffer
+    print('Patched buffer-size on %d layers' % count)
+
+
 def patch_mapnik_xml(xml, options):
     """Patch mapnik xml for better render performance"""
     root = ET.fromstring(xml)
@@ -225,6 +246,7 @@ def patch_mapnik_xml(xml, options):
     remove_dead_styles(root)
     patch_layer_cache_features(root)
     patch_layer_scale_denominator(root)
+    patch_layer_buffer_size(root)
 
     print('Optimized map has %d XML elements (down from %d).' % \
           (len(root.findall('.//*')), num_of_elements))
