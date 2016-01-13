@@ -9,7 +9,7 @@
 //
 // Boundary
 //
-@boundary-line:     #cccccc;
+@boundary-line:     #dddddd;
 @boundary-casing:   #444444;
 @boundary-opacity:  0.33;
 
@@ -59,9 +59,9 @@
 @label-admin-halo:          @boundary-casing;
 @label-admin-halo-opacity:  @boundary-opacity;
 
-@label-place:               #ddccaa;
-@label-place-halo:          #333333;
-@label-place-halo-opacity:  0.33;
+@label-place:               #f5e2ba;
+@label-place-halo:          #222222;
+@label-place-halo-opacity:  0.5;
 
 @label-water:               #0B5F80;
 @label-park:                #1c381c;
