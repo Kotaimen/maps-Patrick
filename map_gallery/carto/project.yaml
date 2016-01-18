@@ -31,7 +31,8 @@ Stylesheet:
   - "boundary.mss"
   - "label-admin.mss"
   - "label-place.mss"
-
+  - "label-road.mss"
+  - "label-physical.mss"
 
 
 _parts:
@@ -215,7 +216,6 @@ Layer:
   # Road
   #
 
-
   - id: "road_gen1"
     name: "road_gen1"
     class: "road"
@@ -304,7 +304,7 @@ Layer:
 
 
   #
-  # Labels
+  # Admin Label
   #
 
   - id: "label_admin0"
@@ -351,6 +351,13 @@ Layer:
 #    properties: {}
 #    advanced: {}
 #
+
+
+
+  #
+  # Place Label
+  #
+
   - id: "label_place_static"
     name: "label_place_static"
     class: "label place "
@@ -369,7 +376,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "cultural.label_osm_place_lv0"
+      table: "annotation.label_osm_place_lv0_view"
     properties: {}
     advanced: {}
 
@@ -380,7 +387,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "cultural.label_osm_place_lv1"
+      table: "annotation.label_osm_place_lv1_view"
     properties: {}
     advanced: {}
 
@@ -391,7 +398,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "cultural.label_osm_place_lv2"
+      table: "annotation.label_osm_place_lv2_view"
     properties: {}
     advanced: {}
 
@@ -402,10 +409,103 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "cultural.label_osm_place_lv3"
+      table: "annotation.label_osm_place_lv3_view"
     properties: {}
     advanced: {}
 
+
+  #
+  # Physical Label
+  #
+
+  - id: "label_lake_point"
+    name: "label_lake_point"
+    class: ""
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: |-
+        (SELECT
+          *,
+          area/NULLIF(!pixel_width!::real*!pixel_height!::real,0) AS pixels
+        FROM annotation.label_osm_waterbody_point_view
+        ) AS foo
+    properties: {}
+    advanced: {}
+
+  - id: "label_lake_line"
+    name: "label_lake_line"
+    class: ""
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: |-
+        (SELECT
+          *,
+          area/NULLIF(!pixel_width!::real*!pixel_height!::real,0) AS pixels
+        FROM annotation.label_osm_waterbody_line_view
+        WHERE area > 10000
+        ) AS foo
+    properties: {}
+    advanced: {}
+
+#  - id: "label_lake_shore"
+#    name: "label_lake_shore"
+#    class: ""
+#    geometry: "polygon"
+#    <<: *extents
+#    Datasource:
+#      <<: *osm
+#      table: |-
+#        (SELECT
+#          *,
+#          area/NULLIF(!pixel_width!::real*!pixel_height!::real,0) AS pixels
+#        FROM annotation.label_osm_waterbody_polygon_view
+#        WHERE area > 100000000
+#        ) AS foo
+#    properties: {}
+#    advanced: {}
+
+
+  #
+  # Road Label
+  #
+
+  - id: "label_road_gen1"
+    name: "label_road_gen1"
+    class: "label road"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "annotation.label_osm_road_gen1_view"
+    properties: {}
+    advanced: {}
+
+  - id: "label_road_gen0"
+    name: "label_road_gen0"
+    class: "label road"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "annotation.label_osm_road_gen0_view"
+    properties: {}
+    advanced: {}
+
+
+  - id: "label_road"
+    name: "label_road"
+    class: "label road"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "annotation.label_osm_road_view"
+    properties: {}
+    advanced: {}
 
 #  - id: "label_lake_10m"
 #    name: "label_lake_10m"
