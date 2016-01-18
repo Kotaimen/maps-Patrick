@@ -17,10 +17,12 @@
     text-placement: point;
 
     text-name: '';
-    [zoom=4]  { text-size: 10; text-name: '[label_z4]'; }
-    [zoom=5]  { text-size: 12; text-name: '[label_z5]'; }
-    [zoom=6]  { text-size: 14; text-name: '[label_z6]'; }
-    [zoom>=7] { text-size: 16; text-name: '[label_z7]'; }
+    [zoom=4] { text-size: 10; text-name: '[label_z4]'; }
+    [zoom=5] { text-size: 12; text-name: '[label_z5]'; }
+    [zoom=6] { text-size: 14; text-name: '[label_z6]'; }
+    [zoom=7] { text-size: 18; text-name: '[label_z7]'; }
+    [zoom=8] { text-size: 24; text-name: '[label_z7]'; text-character-spacing: 1; }
+    [zoom=9] { text-size: 28; text-name: '[label_z7]'; text-character-spacing: 2; }
 
     text-face-name: @font-admin;
     text-fill: @label-admin;

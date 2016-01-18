@@ -16,12 +16,12 @@
         shield-name: [name];
         shield-placement-type: simple;
         shield-placement: point;
-        shield-size: [font_size] / 2 + 12; // data defined font is too large
+        shield-size: [font_size];// / 2 + 12; // data defined font is too large
         shield-text-dx: 5; shield-text-dy: 5;
-        shield-fill: black; //@label-place;
-//        shield-halo-radius: @halo-radius-default;
-//        shield-halo-fill: @label-place-halo;
-//        shield-halo-opacity: @label-place-halo-opacity;
+        shield-fill: @label-place;
+        shield-halo-radius: @halo-radius-default;
+        shield-halo-fill: @label-place-halo;
+        shield-halo-opacity: @label-place-halo-opacity;
         shield-margin: 2;
 
         // data defined placement
@@ -52,10 +52,10 @@
     text-name: '';
     text-face-name: @font-place;
     text-placement: point;
-    text-fill: black; //@label-place;
-//    text-halo-fill: @label-place-halo;
-//    text-halo-opacity: @label-place-halo-opacity;
-//    text-halo-radius: @halo-radius-default;
+    text-fill: @label-place;
+    text-halo-fill: @label-place-halo;
+    text-halo-opacity: @label-place-halo-opacity;
+    text-halo-radius: @halo-radius-default;
     text-margin: 2;
 
     [feature='city'],
@@ -102,11 +102,11 @@
         text-transform: uppercase;
         text-wrap-width: 60;
         [zoom<=13] { text-margin: 24; }
-        [zoom>=13] { text-margin: 16; }
+        [zoom>=14] { text-margin: 16; }
 
-        text-fill: @label-place;
-        text-halo-fill: @label-place-halo;
-        text-halo-opacity: @label-place-halo-opacity;
+        text-fill: @label-admin;
+        text-halo-fill: @label-admin-halo;
+        text-halo-opacity: @label-admin-halo-opacity;
         text-halo-radius: @halo-radius-default;
         [zoom>=14] { text-character-spacing: 1; }
     }

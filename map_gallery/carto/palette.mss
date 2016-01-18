@@ -54,6 +54,9 @@
 // Label
 //
 @halo-radius-default:       1;
+@label-halo:                #ffffff;
+@label-halo-opacity:        0.33;
+
 
 @label-admin:               @boundary-line;
 @label-admin-halo:          @boundary-casing;
@@ -63,25 +66,43 @@
 @label-place-halo:          #222222;
 @label-place-halo-opacity:  0.5;
 
-@label-water:               #0B5F80;
+@label-road-highway:        #444455;
+@label-road-primary:        @label-road-highway;
+@label-road-minor:          #555566;
+@label-road-path:           @label-road-minor;
+@label-road-halo:           @label-halo;
+@label-road-halo-opacity:   0.5;
+@label-railway:             @label-road-minor;
+
+@label-water-feature:       #0B5F80;
 @label-park:                #1c381c;
 @label-physical:            #552211;
+
+
 
 //
 // Fonts
 //
-@font-place:        "Roboto Condensed Regular";
-@font-admin:        "Roboto Medium";
-@font-physical:     "Roboto Medium Italic";
-@font-water:        "Roboto Medium Italic";
-@font-poi:          "Roboto Medium Italic";
+@font-place:                "Roboto Condensed Regular";
+@font-admin:                "Roboto Black";
+@font-physical:             "Roboto Medium Italic";
+@font-water-feature:        "Roboto Medium Italic";
 
+@font-poi:                  "Roboto Medium Italic";
+@font-road-highway:         "Roboto Medium";
+@font-road-primary:         "Roboto Regular";
+@font-road-minor:           "Roboto Regular";
+@font-railway:              "Roboto Regular";
+
+@text-size-regular:         14;
+@text-size-small:           12;
+@text-size-large:           18;
 
 //
 // Background
 //
 Map {
-    background-image: url('res/real-hillshading-1.png');
+//    background-image: url('res/real-hillshading-1.png');
     background-color: @land;
     font-directory: url('fonts');
 //    buffer-size: 256;
