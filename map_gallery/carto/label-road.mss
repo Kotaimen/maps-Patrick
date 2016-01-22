@@ -1,3 +1,4 @@
+
 //#label_road_gen1[zoom>=9][zoom<=10],
 #label_road_gen1[zoom>=11][zoom<=13],
 #label_road_gen0[zoom>=14][zoom<=15],
@@ -15,8 +16,8 @@
 
     text-spacing: 160;
     text-repeat-distance: 48;
-    [dir>=0] { text-dy: -5; }
-    [dir<0] {text-dy: 5;}
+    [dir>=0] { text-dy: -4; }
+    [dir<0] {text-dy: 4;}
 //    text-upright: right-only;
 
     [is_tunnel=1] {

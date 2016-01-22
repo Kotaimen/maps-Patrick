@@ -54,7 +54,7 @@
 // Road overview
 //
 
-#road_gen1[zoom>=6][zoom<=8] {
+#road_gen1[zoom>=7][zoom<=8] {
 
     [feature='motorway'], [feature='trunk'], {
         ::casing {
