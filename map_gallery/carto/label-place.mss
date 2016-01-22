@@ -1,4 +1,3 @@
-
 #label_place_static
     [zoom>=5][zoom<=10]
     [continent='North America'] {
@@ -16,7 +15,7 @@
         shield-name: [name];
         shield-placement-type: simple;
         shield-placement: point;
-        shield-size: [font_size];// / 2 + 12; // data defined font is too large
+        shield-size: [font_size] / 2 + 12; // data defined font is too large
         shield-text-dx: 5; shield-text-dy: 5;
         shield-fill: @label-place;
         shield-halo-radius: @halo-radius-default;
@@ -34,7 +33,6 @@
         shield-placements: 'E,NE,W,SW,S';
     }
 //    debug-mode: collision;
-
 }
 
 
@@ -103,11 +101,6 @@
         text-wrap-width: 60;
         [zoom<=13] { text-margin: 24; }
         [zoom>=14] { text-margin: 16; }
-
-        text-fill: @label-admin;
-        text-halo-fill: @label-admin-halo;
-        text-halo-opacity: @label-admin-halo-opacity;
-        text-halo-radius: @halo-radius-default;
         [zoom>=14] { text-character-spacing: 1; }
     }
 //    debug-mode: collision;
