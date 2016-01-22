@@ -224,7 +224,7 @@ def patch_layer_buffer_size(root, buffer=32):
     """
     count = 0
     for layer in root.xpath('./Layer'):
-        if layer.attrib['name'].startswith('label_'):
+        if not layer.attrib['name'].startswith('label_'):
             count += 1
             layer.attrib['buffer-size'] = '%d' % buffer
     print('Patched buffer-size on %d layers' % count)
