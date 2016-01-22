@@ -418,18 +418,95 @@ Layer:
   # Physical Label
   #
 
-  - id: "label_lake_point"
-    name: "label_lake_point"
+  - id: "label_ocean_10m"
+    name: "label_ocean_10m"
     class: ""
     geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_geography_marine_polys"
+    properties: {}
+    advanced: {}
+
+  - id: "label_geo_region_10m"
+    name: "label_geo_region_10m"
+    class: ""
+    geometry: "linestring"
     <<: *extents
     Datasource:
       <<: *osm
       table: |-
         (SELECT
           *,
-          area/NULLIF(!pixel_width!::real*!pixel_height!::real,0) AS pixels
+          st_length(geometry) / NULLIF(!pixel_width!::real, 0) AS arc_length,
+          length(name) AS name_length
+        FROM annotation.label_geography_regions_view
+        ) AS foo
+    properties: {}
+    advanced: {}
+
+  - id: "label_river_10m"
+    name: "label_river_10m"
+    class: ""
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_rivers_lake_centerlines"
+    properties: {}
+    advanced: {}
+
+  - id: "label_river_na_10m"
+    name: "label_river_na_10m"
+    class: ""
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_rivers_north_america"
+    properties: {}
+    advanced: {}
+
+  - id: "label_elev_10m"
+    name: "label_elev_10m"
+    class: ""
+    geometry: "point"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_geography_regions_elevation_points"
+    properties: {}
+    advanced: {}
+
+  - id: "label_lake_point"
+    name: "label_lake_point"
+    class: ""
+    geometry: "point"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: |-
+        (SELECT
+          *,
+          area / NULLIF(!pixel_width!::real*!pixel_height!::real, 0) AS pixels
         FROM annotation.label_osm_waterbody_point_view
+        WHERE area >= NULLIF(!pixel_width!::real*!pixel_height!::real * 128, 0)
+        ) AS foo
+    properties: {}
+    advanced: {}
+
+  - id: "label_elev"
+    name: "label_elev"
+    class: ""
+    geometry: "point"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: |-
+        (SELECT
+          *
+          FROM annotation.label_osm_elevation
         ) AS foo
     properties: {}
     advanced: {}
@@ -437,37 +514,19 @@ Layer:
   - id: "label_lake_line"
     name: "label_lake_line"
     class: ""
-    geometry: "polygon"
+    geometry: "linestring"
     <<: *extents
     Datasource:
       <<: *osm
       table: |-
         (SELECT
           *,
-          area/NULLIF(!pixel_width!::real*!pixel_height!::real,0) AS pixels
+          area / NULLIF(!pixel_width!::real*!pixel_height!::real, 0) AS pixels
         FROM annotation.label_osm_waterbody_line_view
-        WHERE area > 10000
+        WHERE area >= NULLIF(!pixel_width!::real*!pixel_height!::real * 4096, 0)
         ) AS foo
     properties: {}
     advanced: {}
-
-#  - id: "label_lake_shore"
-#    name: "label_lake_shore"
-#    class: ""
-#    geometry: "polygon"
-#    <<: *extents
-#    Datasource:
-#      <<: *osm
-#      table: |-
-#        (SELECT
-#          *,
-#          area/NULLIF(!pixel_width!::real*!pixel_height!::real,0) AS pixels
-#        FROM annotation.label_osm_waterbody_polygon_view
-#        WHERE area > 100000000
-#        ) AS foo
-#    properties: {}
-#    advanced: {}
-
 
   #
   # Road Label
@@ -518,36 +577,3 @@ Layer:
 #    properties: {}
 #    advanced: {}
 #
-#
-#  - id: "label_river_10m"
-#    name: "label_river_10m"
-#    class: ""
-#    geometry: "linestring"
-#    <<: *extents84
-#    Datasource:
-#      <<: *ne2
-#      table: "ne_10m_physical.ne_10m_rivers_lake_centerlines"
-#    properties: {}
-#    advanced: {}
-#
-#  - id: "label_river_na_10m"
-#    name: "label_river_na_10m"
-#    class: ""
-#    geometry: "linestring"
-#    <<: *extents84
-#    Datasource:
-#      <<: *ne2
-#      table: "ne_10m_physical.ne_10m_rivers_north_america"
-#    properties: {}
-#    advanced: {}
-#
-#  - id: "label_elevation"
-#    name: "label_elevation"
-#    class: ""
-#    geometry: "point"
-#    <<: *extents
-#    Datasource:
-#      <<: *osm
-#      table: "(SELECT * FROM physical.osm_elevation ) AS foo"
-#    properties: {}
-#    advanced: {}
