@@ -12,8 +12,6 @@ clean:
 carto/res/Stage/tint.png:
 	convert -size 30x256 gradient: -rotate 90 -interpolate Bicubic \( +size xc:#334466  xc:grey50 xc:#f7ba9d +append \) -clut $@
 
-#VPATH = carto
-
 %.mml : %.yaml
 	${PYTHON} -c 'import yaml, json; print(json.dumps(yaml.load(open("$<")), indent=2))' > $@
 

@@ -11,3 +11,11 @@
         polygon-fill:@water;
     }
 }
+
+#bathymetry_10m[zoom<=7] {
+    ::fill {
+        polygon-fill: @river;
+        polygon-opacity: 0.08;
+        polygon-comp-op: multiply;
+    }
+}

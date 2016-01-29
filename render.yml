@@ -1,6 +1,6 @@
 # Renderer, attached to tileserver network
 renderer:
-  image: kotaimen/stonemason:0.3.0rc1
+  image: kotaimen/stonemason:0.3.0
   entrypoint: ./run_render.sh
   working_dir: /var/lib/stonemason/render
   volumes:

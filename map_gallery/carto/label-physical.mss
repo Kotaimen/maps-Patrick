@@ -1,21 +1,6 @@
-#label_ocean_10m {
-    [zoom<=4][scalerank<=0],
-    [zoom=5][scalerank<=1],
-    [zoom=6][scalerank<=2],
-    [zoom=7][scalerank<=3],
-    [zoom=8][scalerank<=4],
-    [zoom>=9][scalerank<100], {
-        [featurecla='ocean'] { text-size: 14; }
-        text-size: 12;
-        text-face-name: @font-water-feature;
-        text-name: [name];
-        text-wrap-width: 50;
-        text-placement: interior;
-        text-fill: @label-water-feature;
-    }
-}
 
-#label_geo_region_10m[zoom>=5][zoom<=10] {
+#label_geo_region_10m[zoom>=4][zoom<=10] {
+    [zoom=4][scalerank<=2],
     [zoom=5][scalerank<=3],
     [zoom=6][scalerank<=4],
     [zoom=7][scalerank<=5],
@@ -26,7 +11,8 @@
 //            line-color: orange;
 //            line-dasharray: 2, 2;
 //        }
-        text-size: 24-[scalerank];
+        [zoom<=6] { text-size: 16; }
+        [zoom>=7] { text-size: 22-[scalerank]; }
         text-name: [name];
         text-face-name: @font-georegion;
         text-fill: @label-georegion;
@@ -36,7 +22,6 @@
         text-placement: line;
         text-spacing: 0;
         text-character-spacing: [arc_length]/[name_length]/5;
-//        text-font-feature-settings: 'smcp on';
     }
 //    debug-mode: collision;
 }
@@ -66,61 +51,48 @@
 //    debug-mode: collision;
 }
 
-#label_elev_10m[zoom>=4][zoom<=10][region='North America'] {
-    [zoom<=4][scalerank<=4],
-    [zoom=5][scalerank<=5],
-    [zoom=6][scalerank<=6],
-    [zoom=7][scalerank<=7],
-    [zoom=8][scalerank<=8],
-    [zoom>=9], {
-        shield-size: 12;
-        shield-file: url('res/Assets/elev-circle.svg');
-        shield-unlock-image: true;
-        shield-face-name: @font-physical;
-        shield-name: [name];
-//        shield-wrap-width: 50;
-        shield-placement-type: simple;
-        shield-placement: point;
-        shield-text-dx: 4;
-        shield-text-dy: 3;
-        shield-fill: @label-physical;
-        shield-halo-radius: @halo-radius-default;
-        shield-halo-fill:  @label-physical-halo;
-        shield-halo-opacity: @label-physical-halo-opacity;
-        shield-margin: 2;
-        shield-placements: 'E,W';
-    }
-//    debug-mode: collision;
-}
-
-#label_elev[zoom>=11] {
-    [zoom<=12] {
-        shield-size: 12;
-        shield-text-dx: 4;
-        shield-text-dy: 3;
-        shield-wrap-width: 50;
-    }
-    [zoom>=13] {
+#label_elev[zoom>=5] {
+    [zoom<=6][rank<=0],
+    [zoom>=7][zoom<=8][rank<=10],
+    [zoom>=9][zoom<=10][rank<=20],
+    [zoom=11][rank<=100],
+    [zoom=12][rank<=110],
+    [zoom=13][rank<=120],
+    [zoom=14][rank<=130],
+    [zoom>=15],
+    {
         shield-size: 14;
         shield-text-dx: 6;
         shield-text-dy: 4;
-        shield-wrap-width: 66;
+
         shield-file: url('res/Assets/elev-circle2.svg');
+
+        shield-unlock-image: true;
+        shield-face-name: @font-physical;
+
+        shield-placement-type: simple;
+        shield-placement: point;
+        shield-fill: @label-physical;
+        shield-halo-radius: @halo-radius-thick;
+        shield-halo-fill:  @label-physical-halo;
+        shield-halo-opacity: @label-physical-halo-opacity;
+        shield-margin: 4;
+        shield-placements: 'E,W';
+
+        [zoom<=8] {
+            shield-name: [name_abbr];
+            shield-wrap-width: 66;
+        }
+        [zoom>=9][zoom<=10] {
+            shield-name: [name_abbr]+'\n'+[elev_in_ft]+' ft';
+            shield-wrap-width: 66;
+        }
+        [zoom>=11] {
+            shield-size: 16;
+            shield-name: [name]+'\n'+[elev_in_ft]+' ft';
+            shield-wrap-width: 128;
+        }
     }
-
-    shield-file: url('res/Assets/elev-circle.svg');
-    shield-unlock-image: true;
-    shield-face-name: @font-physical;
-    shield-name: [name]+'\n'+[ele];
-    shield-placement-type: simple;
-    shield-placement: point;
-    shield-fill: @label-physical;
-    shield-halo-radius: @halo-radius-default;
-    shield-halo-fill:  @label-physical-halo;
-    shield-halo-opacity: @label-physical-halo-opacity;
-    shield-margin: 16;
-    shield-placements: 'E,W';
-
 //    debug-mode: collision;
 }
 
@@ -132,7 +104,7 @@
     text-name: '';
     text-face-name: @font-water-feature;
 
-    text-size: 12;
+    text-size: 14;
     text-fill: @label-water-feature;
     text-halo-fill: @label-water-halo;
     text-halo-radius: @halo-radius-default;
@@ -150,7 +122,6 @@
     [pixels>=2048][pixels<4096],
     {
         text-name: [name];
-        text-size: 14;
         text-placements: 'E,W,X';
         text-placement-type: simple;
         text-dx: 4;

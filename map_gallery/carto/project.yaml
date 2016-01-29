@@ -20,9 +20,6 @@ maxzoom: 17
 srs: "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
 
 
-
-
-
 Stylesheet:
   - "palette.mss"
   - "ocean.mss"
@@ -33,6 +30,7 @@ Stylesheet:
   - "label-place.mss"
   - "label-road.mss"
   - "label-physical.mss"
+  - "label-water-feature.mss"
 
 
 _parts:
@@ -78,7 +76,7 @@ Layer:
     <<: *extents84
     Datasource:
        <<: *ne2
-       table: ne_10m_physical.ne_10m_ocean
+       table: "ne_10m_physical.ne_10m_ocean"
     properties: {}
     advanced: {}
 
@@ -93,6 +91,39 @@ Layer:
     properties: {}
     advanced: {}
 
+  - id: "bathymetry_10m"
+    name: "bathymetry_10m"
+    class: "ocean"
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table:  |-
+        (SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_k_200
+         UNION ALL
+         SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_j_1000
+         UNION ALL
+         SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_i_2000
+         UNION ALL
+         SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_h_3000
+         UNION ALL
+         SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_g_4000
+         UNION ALL
+         SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_f_5000
+         UNION ALL
+          -- fixes missing Natural earth data column
+         SELECT gid, geometry, 6000 AS depth FROM ne_10m_physical.ne_10m_bathymetry_e_6000
+         UNION ALL
+         SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_d_7000
+         UNION ALL
+         SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_c_8000
+         UNION ALL
+         SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_b_9000
+         UNION ALL
+         SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_a_10000
+        ) AS foo
+    properties: {}
+    advanced: {}
 
   #
   # Water feature
@@ -413,7 +444,6 @@ Layer:
     properties: {}
     advanced: {}
 
-
   #
   # Physical Label
   #
@@ -425,9 +455,29 @@ Layer:
     <<: *extents84
     Datasource:
       <<: *ne2
-      table: "ne_10m_physical.ne_10m_geography_marine_polys"
+      table: |-
+        (SELECT * FROM ne_10m_physical.ne_10m_geography_marine_polys
+         WHERE featurecla IN ('ocean', 'sea') ) AS foo
     properties: {}
     advanced: {}
+
+  - id: "label_ocean_region_10m"
+    name: "label_ocean_region_10m"
+    class: ""
+    geometry: "linestring"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: |-
+        (SELECT
+          *,
+          st_length(geometry) / NULLIF(!pixel_width!::real, 0) AS arc_length,
+          length(name) AS name_length
+        FROM annotation.label_geography_marine_view
+        ) AS foo
+    properties: {}
+    advanced: {}
+
 
   - id: "label_geo_region_10m"
     name: "label_geo_region_10m"
@@ -468,17 +518,6 @@ Layer:
     properties: {}
     advanced: {}
 
-  - id: "label_elev_10m"
-    name: "label_elev_10m"
-    class: ""
-    geometry: "point"
-    <<: *extents84
-    Datasource:
-      <<: *ne2
-      table: "ne_10m_physical.ne_10m_geography_regions_elevation_points"
-    properties: {}
-    advanced: {}
-
   - id: "label_lake_point"
     name: "label_lake_point"
     class: ""
@@ -506,7 +545,7 @@ Layer:
       table: |-
         (SELECT
           *
-          FROM annotation.label_osm_elevation
+          FROM annotation.label_gnis_elevation
         ) AS foo
     properties: {}
     advanced: {}

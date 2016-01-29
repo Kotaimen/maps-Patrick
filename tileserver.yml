@@ -11,7 +11,7 @@ reverse-proxy:
 
 # Tile map service
 stonemason:
-  image: kotaimen/stonemason:0.3.0rc1
+  image: kotaimen/stonemason:0.3.0
   command: tileserver --bind=0.0.0.0:80
   links:
     - memcache
@@ -25,13 +25,17 @@ stonemason:
     - STONEMASON_VERBOSE=1
     - STONEMASON_CACHE=memcache:11211
 #    - STONEMASON_READ_ONLY=1
-#    - STONEMASON_WORKERS=8
+    - STONEMASON_WORKERS=8
     - STONEMASON_GALLERY=/var/lib/stonemason/map_gallery
     - PGHOST=pgbouncer
     - PGPORT=6432
     - PGUSER=postgres
     - PGPASSWORD=123456
-    - http_proxy=http://cache-proxy:3128
+#    - http_proxy=http://cache-proxy:3128
+    - http_proxy=http://172.26.10.55:8123
+    - https_proxy=http://172.26.10.55:8123
+    - AWS_ACCESS_KEY_ID=AKIAIWN37SON74WWEIGA
+    - AWS_SECRET_ACCESS_KEY=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
 
 # Tile Cache
 memcache:
