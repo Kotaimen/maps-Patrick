@@ -1,14 +1,14 @@
 
 //#label_road_gen1[zoom>=9][zoom<=10],
-#label_road_gen1[zoom>=11][zoom<=13],
-#label_road_gen0[zoom>=14][zoom<=15],
-#label_road     [zoom>=16],
+#label_road_gen1[zoom>=11][zoom<=12],
+#label_road_gen0[zoom>=13][zoom<=14],
+#label_road     [zoom>=15],
  {
     text-name: '';
     text-placement: line;
     text-face-name: @font-road-highway;
 
-    text-size: 14;
+    text-size: @text-size-regular;
     text-fill: @label-road-highway;
     text-halo-fill: @label-road-halo;
     text-halo-radius: @halo-radius-default;
@@ -52,14 +52,12 @@
         text-dy: 0;
     }
 
-    [osm_class='route'] {
-        [feature='ferry'] {
-            text-name: [name];
-            text-face-name: @font-water-feature;
-            text-fill: @label-water-feature;
-            text-halo-radius: 0;//@halo-radius-default;
-            text-spacing: 200;
-        }
+    [osm_class='route'][feature='ferry'][zoom>=15] {
+        text-name: [name];
+        text-face-name: @font-water-feature;
+        text-fill: @label-water-feature;
+        text-halo-radius: 0;
+        text-spacing: 200;
     }
 
 //    debug-mode: collision;

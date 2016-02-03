@@ -12,7 +12,7 @@
     }
 }
 
-#bathymetry_10m[zoom<=7] {
+#bathymetry_10m {
     ::fill {
         polygon-fill: @river;
         polygon-opacity: 0.08;

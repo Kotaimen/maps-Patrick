@@ -32,7 +32,6 @@ Stylesheet:
   - "label-physical.mss"
   - "label-water-feature.mss"
 
-
 _parts:
   extents: &extents
     extent: [-20037508.34,-20037508.34,20037508.34,20037508.34]
@@ -59,9 +58,6 @@ _parts:
     extent: [-20037508.34,-20037508.34,20037508.34,20037508.34]
     key_field: "id"
     geometry_field: "geometry"
-
-
-
 
 
 Layer:
@@ -191,6 +187,17 @@ Layer:
     Datasource:
       <<: *ne2
       table: "ne_10m_physical.ne_10m_lakes"
+    properties: {}
+    advanced: {}
+
+  - id: "lake_na_10m"
+    name: "lake_na_10m"
+    class: "waterbody"
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *ne2
+      table: "ne_10m_physical.ne_10m_lakes_north_america"
     properties: {}
     advanced: {}
 
@@ -333,7 +340,6 @@ Layer:
     advanced: {}
 
 
-
   #
   # Admin Label
   #
@@ -371,19 +377,6 @@ Layer:
 #    properties: {}
 #    advanced: {}
 #
-#  - id: "label_admin1_boundary"
-#    name: "label_admin1_boundary"
-#    class: ""
-#    geometry: "polygon"
-#    <<: *extents84
-#    Datasource:
-#      <<: *ne2
-#      table: "ne_10m_cultural.ne_10m_admin_1_states_provinces_shp"
-#    properties: {}
-#    advanced: {}
-#
-
-
 
   #
   # Place Label
@@ -397,7 +390,8 @@ Layer:
     Datasource:
       file: "data/place-point-labels.shp"
       type: "shape"
-    properties: {}
+    properties:
+      clear-label-cache: "yes"
     advanced: {}
 
   - id: "label_place_lv0"
@@ -477,7 +471,6 @@ Layer:
         ) AS foo
     properties: {}
     advanced: {}
-
 
   - id: "label_geo_region_10m"
     name: "label_geo_region_10m"
@@ -593,7 +586,6 @@ Layer:
     properties: {}
     advanced: {}
 
-
   - id: "label_road"
     name: "label_road"
     class: "label road"
@@ -604,15 +596,3 @@ Layer:
       table: "annotation.label_osm_road_view"
     properties: {}
     advanced: {}
-
-#  - id: "label_lake_10m"
-#    name: "label_lake_10m"
-#    class: ""
-#    geometry: "polygon"
-#    <<: *extents84
-#    Datasource:
-#      <<: *ne2
-#      table: "ne_10m_physical.ne_10m_lakes"
-#    properties: {}
-#    advanced: {}
-#

@@ -62,20 +62,23 @@
         text-size: 28;
         text-wrap-width: 150;
 
-        [zoom>=13] { text-character-spacing: 2; }
+        [zoom>=13][zoom<=14] { text-character-spacing: 2; }
+        [zoom>=15] { text-character-spacing: 4; }
+
     }
 
     [feature='town'], {
         text-name: [name];
-        text-size: 20;
+        text-size: 22;
         text-wrap-width: 120;
 
-        [zoom>=13] { text-character-spacing: 1; }
+        [zoom>=13][zoom<=14] { text-character-spacing: 1; }
+        [zoom>=15] { text-character-spacing: 2; }
     }
 
     [feature='village'] {
         text-name: [name];
-        text-size: 16;
+        text-size: 18;
         text-wrap-width: 120;
 
         [zoom>=13] { text-character-spacing: 1; }
@@ -83,7 +86,7 @@
 
     [feature='quarter'] {
         text-name: [name];
-        text-size: 16;
+        text-size: 18;
         text-transform: uppercase;
         [zoom>=13] { text-character-spacing: 1; }
     }
@@ -96,7 +99,7 @@
     [feature='farm'][zoom>=15],
     {
         text-name: [name];
-        text-size: 16;
+        text-size: 18;
         text-transform: uppercase;
         text-wrap-width: 60;
         [zoom<=13] { text-margin: 24; }

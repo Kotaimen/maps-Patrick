@@ -1,14 +1,9 @@
-
-
 #river_10m[zoom<=7],
 #river_na_10m[zoom<=7] {
-    [zoom<=4][scalerank<=4],
-    [zoom=5][scalerank<=5],
-    [zoom=6][scalerank<=6],
-    [zoom=7][scalerank<=7],
-    [zoom=8][scalerank<=8],
-    [zoom=9],
-    {
+    [zoom<=4][scalerank<=6],
+    [zoom=5] [scalerank<=7],
+    [zoom=6] [scalerank<=8],
+    [zoom>=7] {
         line-color: @river;
         line-join: round;
         [zoom<=8] { line-width: 0.5; }
@@ -53,13 +48,12 @@
     }
 }
 
-#lake_10m[zoom<=7] {
-    [zoom<=4][scalerank<=4],
-    [zoom=5] [scalerank<=5],
-    [zoom=6] [scalerank<=6],
-    [zoom=7] [scalerank<=7],
-    [zoom=8] [scalerank<=8],
-    [zoom>=9] {
+#lake_10m[zoom<=7],
+#lake_na_10m[zoom<=7] {
+    [zoom<=4][scalerank<=6],
+    [zoom=5] [scalerank<=7],
+    [zoom=6] [scalerank<=8],
+    [zoom>=7] {
         ::outline {
             line-color: @river;
             line-width: 2;
