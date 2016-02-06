@@ -50,11 +50,11 @@
     [zoom=14][rank<=130],
     [zoom>=15],
     {
-        shield-size: 14;
+        shield-size: @text-size-regular;
         shield-text-dx: 6;
         shield-text-dy: 4;
 
-        shield-file: url('res/Assets/elev-circle-small.svg');
+        shield-file: url('res/Assets/marker/elev-circle-small.svg');
 
         shield-unlock-image: true;
         shield-face-name: @font-physical;

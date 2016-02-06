@@ -9,7 +9,7 @@
     [layer=8][zoom=9],
     [layer>=9][zoom>=10] {
         
-        shield-file: url('res/Assets/place-circle.svg');
+        shield-file: url('res/Assets/marker/place-circle.svg');
         shield-unlock-image: true;
         shield-face-name: @font-place;
         shield-name: [name];
