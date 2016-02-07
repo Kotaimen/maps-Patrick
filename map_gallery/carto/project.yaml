@@ -31,6 +31,7 @@ Stylesheet:
   - "label-road.mss"
   - "label-physical.mss"
   - "label-water-feature.mss"
+  - "label-shield.mss"
 
 _parts:
   extents: &extents
@@ -606,5 +607,88 @@ Layer:
     Datasource:
       <<: *osm
       table: "annotation.label_osm_road_view"
+    properties: {}
+    advanced: {}
+
+  - id: "label_shield_gen1"
+    name: "label_shield_gen1"
+    class: "label road"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: |-
+        (SELECT
+           *,
+           length(sign_num) AS sign_length
+        FROM
+           (SELECT
+              *,
+              upper(substring(ref, '^([A-Z]{1,3}|Spur|Loop|Hwy)\s')) AS sign_type,
+              coalesce(substring(ref, '\s([A-Z]?\d+)$'),
+                       substring(ref, '^([^;]+);'),
+                       ref)                                          AS sign_num
+            FROM annotation.label_osm_shield_gen1
+            WHERE ref_length <= 8 AND osm_class = 'highway' AND
+                  feature IN ('motorway', 'trunk') AND
+                  geometry && !bbox!
+            ORDER BY rank ASC, id
+           ) AS bob
+        ) AS ray
+    properties: {}
+    advanced: {}
+
+  - id: "label_shield_gen0"
+    name: "label_shield_gen0"
+    class: "label road"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: |-
+        (SELECT
+           *,
+           length(sign_num) AS sign_length
+        FROM
+           (SELECT
+              *,
+              upper(substring(ref, '^([A-Z]{1,3}|Spur|Loop|Hwy)\s')) AS sign_type,
+              coalesce(substring(ref, '\s([A-Z]?\d+)$'),
+                       substring(ref, '^([^;]+);'),
+                       ref)                                          AS sign_num
+            FROM annotation.label_osm_shield_gen0
+            WHERE ref_length <= 8 AND osm_class = 'highway' AND
+                  feature IN ('motorway', 'trunk', 'primary') AND
+                  geometry && !bbox!
+            ORDER BY rank ASC, id
+           ) AS bob
+        ) AS ray
+    properties: {}
+    advanced: {}
+
+  - id: "label_shield"
+    name: "label_shield"
+    class: "label road"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: |-
+        (SELECT
+           *,
+           length(sign_num) AS sign_length
+        FROM
+           (SELECT
+              *,
+              upper(substring(ref, '^([A-Z]{1,3}|Spur|Loop|Hwy)\s')) AS sign_type,
+              coalesce(substring(ref, '\s([A-Z]?\d+)$'),
+                       substring(ref, '^([^;]+);'),
+                       ref)                                          AS sign_num
+            FROM annotation.label_osm_shield
+            WHERE ref_length <= 8 AND osm_class = 'highway' AND
+                  geometry && !bbox!
+            ORDER BY rank ASC, id
+           ) AS bob
+        ) AS ray
     properties: {}
     advanced: {}
