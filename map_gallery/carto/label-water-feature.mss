@@ -153,3 +153,16 @@
 //    debug-mode: collision;
 }
 
+#label_waterway[zoom>=14] {
+    text-name: [name];
+    text-face-name: @font-water-feature;
+    text-fill: @label-water-feature;
+    text-halo-fill: @label-water-halo;
+    text-halo-radius: @halo-radius-default;
+    text-halo-opacity: @label-halo-opacity;
+    text-size:  @text-size-regular;
+    text-spacing: 200;
+    text-placement: line;
+    text-character-spacing: 1;
+    text-dy: 4;
+}

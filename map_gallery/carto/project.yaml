@@ -560,6 +560,18 @@ Layer:
     properties: {}
     advanced: {}
 
+
+  - id: "label_waterway"
+    name: "label_waterway"
+    class: ""
+    geometry: "linestring"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "annotation.label_osm_waterway_view"
+    properties: {}
+    advanced: {}
+
   #
   # Road Label
   #
