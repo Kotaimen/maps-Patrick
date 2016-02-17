@@ -24,13 +24,15 @@ Stylesheet:
   - "palette.mss"
   - "ocean.mss"
   - "water-feature.mss"
+  - "nps.mss"
   - "road.mss"
   - "boundary.mss"
   - "label-admin.mss"
   - "label-place.mss"
-  - "label-road.mss"
+  - "label-nps.mss"
   - "label-physical.mss"
   - "label-water-feature.mss"
+  - "label-road.mss"
   - "label-shield.mss"
 
 _parts:
@@ -47,6 +49,14 @@ _parts:
   ne2: &ne2
     type: "postgis"
     dbname: "naturalearth2"
+    srid: "4326"
+    extent: *world
+    key_field: "gid"
+    geometry_field: "geometry"
+
+  nps: &nps
+    type: "postgis"
+    dbname: "stonemason_nps"
     srid: "4326"
     extent: *world
     key_field: "gid"
@@ -119,6 +129,7 @@ Layer:
          UNION ALL
          SELECT gid, geometry, depth FROM ne_10m_physical.ne_10m_bathymetry_a_10000
         ) AS foo
+      simplify_geometries: "true"
     properties: {}
     advanced: {}
 
@@ -236,20 +247,54 @@ Layer:
     advanced: {}
 
   #
-  # Park boundary
+  # National Park Service
   #
 
-  - id: "park_10m"
-    name: "park_10m"
+  - id: "nps_boundary"
+    name: "nps_boundary"
     class: ""
     geometry: "polygon"
     <<: *extents84
     Datasource:
-      <<: *ne2
-      table: "ne_10m_cultural.ne_10m_parks_and_protected_lands_area"
+      <<: *nps
+      table: "nps.boundary"
+      simplify_geometries: "true"
     properties: {}
     advanced: {}
 
+  - id: "nps_trail"
+    name: "nps_trail"
+    class: ""
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *nps
+      table: "nps.national_trail"
+      simplify_geometries: "true"
+    properties: {}
+    advanced: {}
+
+  - id: "nps_parking"
+    name: "nps_parking"
+    class: ""
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *nps
+      table: "nps.parking_lot"
+    properties: {}
+    advanced: {}
+
+  - id: "nps_building"
+    name: "nps_building"
+    class: ""
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *nps
+      table: "nps.building"
+    properties: {}
+    advanced: {}
 
   #
   # Road
@@ -340,7 +385,6 @@ Layer:
     properties: {}
     advanced: {}
 
-
   #
   # Admin Label
   #
@@ -366,18 +410,6 @@ Layer:
       type: "shape"
     properties: {}
     advanced: {}
-#
-#  - id: "label_park_10m"
-#    name: "label_park_10m"
-#    class: ""
-#    geometry: "polygon"
-#    <<: *extents84
-#    Datasource:
-#      <<: *ne2
-#      table: "ne_10m_cultural.ne_10m_parks_and_protected_lands_area"
-#    properties: {}
-#    advanced: {}
-#
 
   #
   # Place Label
@@ -439,6 +471,33 @@ Layer:
     properties: {}
     advanced: {}
 
+
+  #
+  # National Park Service
+  #
+  - id: "label_nps_boundary"
+    name: "label_nps_boundary"
+    class: ""
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *nps
+      table: "annotation.label_nps_boundary_view"
+    properties: {}
+    advanced: {}
+
+  - id: "label_nps_poi"
+    name: "label_nps_poi"
+    class: ""
+    geometry: "point"
+    <<: *extents84
+    Datasource:
+      <<: *nps
+      table: "annotation.label_nps_poi_view"
+    properties: {}
+    advanced: {}
+
+
   #
   # Physical Label
   #
@@ -456,23 +515,6 @@ Layer:
     properties: {}
     advanced: {}
 
-  - id: "label_ocean_region_10m"
-    name: "label_ocean_region_10m"
-    class: ""
-    geometry: "linestring"
-    <<: *extents
-    Datasource:
-      <<: *osm
-      table: |-
-        (SELECT
-          *,
-          st_length(geometry) / NULLIF(!pixel_width!::real, 0) AS arc_length,
-          length(name) AS name_length
-        FROM annotation.label_geography_marine_view
-        ) AS foo
-    properties: {}
-    advanced: {}
-
   - id: "label_geo_region_10m"
     name: "label_geo_region_10m"
     class: ""
@@ -486,6 +528,23 @@ Layer:
           st_length(geometry) / NULLIF(!pixel_width!::real, 0) AS arc_length,
           length(name) AS name_length
         FROM annotation.label_geography_regions_view
+        ) AS foo
+    properties: {}
+    advanced: {}
+
+  - id: "label_ocean_region_10m"
+    name: "label_ocean_region_10m"
+    class: ""
+    geometry: "linestring"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: |-
+        (SELECT
+          *,
+          st_length(geometry) / NULLIF(!pixel_width!::real, 0) AS arc_length,
+          length(name) AS name_length
+        FROM annotation.label_geography_marine_view
         ) AS foo
     properties: {}
     advanced: {}
@@ -561,6 +620,16 @@ Layer:
     properties: {}
     advanced: {}
 
+  - id: "label_waterway_gen0"
+    name: "label_waterway_gen0"
+    class: ""
+    geometry: "linestring"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "annotation.label_osm_waterway_gen0_view"
+    properties: {}
+    advanced: {}
 
   - id: "label_waterway"
     name: "label_waterway"
@@ -617,24 +686,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: |-
-        (SELECT
-           *,
-           length(sign_num) AS sign_length
-        FROM
-           (SELECT
-              *,
-              upper(substring(ref, '^([A-Z]{1,3}|Spur|Loop|Hwy)\s')) AS sign_type,
-              coalesce(substring(ref, '\s([A-Z]?\d+)$'),
-                       substring(ref, '^([^;]+);'),
-                       ref)                                          AS sign_num
-            FROM annotation.label_osm_shield_gen1
-            WHERE ref_length <= 8 AND osm_class = 'highway' AND
-                  feature IN ('motorway', 'trunk') AND
-                  geometry && !bbox!
-            ORDER BY rank ASC, id
-           ) AS bob
-        ) AS ray
+      table: "annotation.label_osm_shield_gen1_view"
     properties: {}
     advanced: {}
 
@@ -645,24 +697,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: |-
-        (SELECT
-           *,
-           length(sign_num) AS sign_length
-        FROM
-           (SELECT
-              *,
-              upper(substring(ref, '^([A-Z]{1,3}|Spur|Loop|Hwy)\s')) AS sign_type,
-              coalesce(substring(ref, '\s([A-Z]?\d+)$'),
-                       substring(ref, '^([^;]+);'),
-                       ref)                                          AS sign_num
-            FROM annotation.label_osm_shield_gen0
-            WHERE ref_length <= 8 AND osm_class = 'highway' AND
-                  feature IN ('motorway', 'trunk', 'primary') AND
-                  geometry && !bbox!
-            ORDER BY rank ASC, id
-           ) AS bob
-        ) AS ray
+      table: "annotation.label_osm_shield_gen0_view"
     properties: {}
     advanced: {}
 
@@ -673,22 +708,6 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: |-
-        (SELECT
-           *,
-           length(sign_num) AS sign_length
-        FROM
-           (SELECT
-              *,
-              upper(substring(ref, '^([A-Z]{1,3}|Spur|Loop|Hwy)\s')) AS sign_type,
-              coalesce(substring(ref, '\s([A-Z]?\d+)$'),
-                       substring(ref, '^([^;]+);'),
-                       ref)                                          AS sign_num
-            FROM annotation.label_osm_shield
-            WHERE ref_length <= 8 AND osm_class = 'highway' AND
-                  geometry && !bbox!
-            ORDER BY rank ASC, id
-           ) AS bob
-        ) AS ray
+      table: "annotation.label_osm_shield_view"
     properties: {}
     advanced: {}

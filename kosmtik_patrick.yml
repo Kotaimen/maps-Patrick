@@ -1,7 +1,7 @@
 # Kosmitk carto map editor
 kosmtik:
   image: kotaimen/kosmtik
-  command: /var/lib/stonemason/map_gallery/carto/project.yaml
+  command: /var/lib/stonemason/map_gallery/carto/patrick.yaml
   links:
     - pgbouncer
   environment:
