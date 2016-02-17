@@ -8,72 +8,97 @@ name = 'patrick_%s' % version
 
 imageformat = 'PNG'
 extension = '.png'
-parameters = dict(optimized=True)
+parameters = dict(convert=dict(mode='P',
+                               colors=256,
+                               dither=3,  # FLOYDSTEINBERG
+                               palette=1,  # adaptive
+                               ),
+                  optimized=True)
 
 metadata = dict(
-        title=title,
-        version='Mark I',
-        abstract='',
-        attribution='',
-        origin_zoom=8,
-        origin=(-121.7719958, 46.8550861),
+    title=title,
+    version='Mark I',
+    abstract='',
+    attribution='',
+    origin_zoom=7,
+    origin=(-113.7, 48.7),
 
 )
 
 THEME = dict(
-        name=name,
-        metadata=metadata,
-        schemas=[]
+    name=name,
+    metadata=metadata,
+    schemas=[]
 )
 
 for scale in [1, 2]:
     tag = '' if (scale == 1) else ('@%dx' % scale)
 
     schema = dict(
-            tag='%s%s' % (tag, extension),
-            pyramid=dict(
-                    stride=8,
-                    geogcs='WGS84',
-                    projcs='EPSG:3857',
-                    levels=range(4, 15 + scale),
-            ),
-            maptype='image',
-            tileformat=dict(format=imageformat, parameters=parameters),
-            storage=None,
-            renderer={
+        tag='%s%s' % (tag, extension),
+        pyramid=dict(
+            stride=8,
+            geogcs='WGS84',
+            projcs='EPSG:3857',
+            levels=range(4, 15 + scale),
+        ),
+        maptype='image',
+        tileformat=dict(format=imageformat, parameters=parameters),
+        storage=dict(
+            prototype='s3',
+            stride=8,
+            bucket='stonemason-tokyo',
+            key_mode='hilbert',
+            prefix='tilestorage/Patrick/%s/patrick%s' % (version, tag)
+        ),
+        renderer={
 
-                'prototype': 'image',
+            'prototype': 'image',
 
-                'layers': {
-                    'hillshading': {
-                        'prototype': 'data.storage.s3',
-                        'stride': 8,
-                        'bucket': 'stonemason-tokyo',
-                        'key_mode': 'hilbert',
-                        'maptype': 'image',
-                        'tileformat': {'format': 'WEBP'},
-                        'prefix': 'tilestorage/Patrick/%s/hillshading' % version,
-                    },
+            'layers': {
+                'hillshading': {
+                    'prototype': 'data.storage.s3',
+                    'stride': 8,
+                    'bucket': 'stonemason-tokyo',
+                    'key_mode': 'hilbert',
+                    'maptype': 'image',
+                    'tileformat': {'format': 'WEBP'},
+                    'prefix': 'tilestorage/Patrick/%s/hillshading' % version,
+                },
 
-                    'roadmap': {
-                        'prototype': 'mapnik',
-                        'style_sheet': '{{ theme_root }}/carto/patrick.xml',
-                        'base_path': '{{ theme_root }}/carto',
-                        'default_scale': scale,
-                        'buffer_size': 256 * scale
-                    },
+                'mask': {
+                    'prototype': 'mapnik',
+                    'style_sheet': '{{ theme_root }}/carto/nps-mask.xml',
+                    'base_path': '{{ theme_root }}/carto',
+                },
 
-                    'root': {
-                        'prototype': 'imagemagick',
-                        'sources': ['hillshading', 'roadmap'],
-                        'command': '''
-                        <<hillshading>> <<roadmap>> -compose Over -composite
+                'roadmap': {
+                    'prototype': 'mapnik',
+                    'style_sheet': '{{ theme_root }}/carto/patrick%s.xml' % tag,
+                    'base_path': '{{ theme_root }}/carto',
+                    'default_scale': scale,
+                    'buffer_size': 256 * scale
+                },
+
+                'root': {
+                    'prototype': 'imagemagick',
+                    'sources': [
+                        'hillshading',
+                        'mask',
+                        'roadmap'
+                    ],
+                    'command': '''
+                        ( <<hillshading>>
+                            -mask <<mask>> -brightness-contrast 4x5 +mask
+                        )
+                        <<roadmap>>
+                            -compose Over -composite
                        -define png:color-type=6
                     '''
-                    }
                 }
-
             }
+
+        }
     )
 
     THEME['schemas'].append(schema)
