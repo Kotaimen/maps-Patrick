@@ -10,5 +10,10 @@ renderer:
     - /var/run/shm/stonemason:/tmp/stonemason
   environment:
     - STONEMASON_GALLERY=/var/lib/stonemason/map_gallery
+    - PGHOST=pgbouncer
+    - PGPORT=6432
+    - PGUSER=postgres
+    - PGPASSWORD=123456
     - http_proxy=http://cache-proxy:3128
+
   net: container:patrick_stonemason_1
