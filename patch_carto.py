@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
 """ Patch carto (https://github.com/mapbox/carto) generated mapnik xml for
@@ -152,9 +152,16 @@ def patch_map(root):
         pass
 
 
-def patch_postgis(root):
-    # XXX patch postgis datasource config
-    pass
+def patch_postgis(root, scale=1):
+    count = 0
+    for param in root.xpath('''
+        ./Layer/Datasource/Parameter[@name='table']'''):
+        param.text = re.sub(r"(!pixel_(?:width|height)!(?:::real)?)",
+                            r"(\1*%d)" % scale, param.text)
+        if DEBUG: ET.dump(param)
+        count += 1
+
+    print('Patched %d postgis datasource.' % count)
 
 
 def patch_layer_scale_denominator(root):
@@ -212,8 +219,8 @@ def patch_layer_scale_denominator(root):
     print('Patched scale denominator on %d layers.' % count)
 
 
-def patch_layer_buffer_size(root, buffer=32):
-    """Overwrite non-label/shield layer buffer size, greatly speedup rendering
+def patch_layer_buffer_size(root, default_buffer=32):
+    """Overwrite non-label/shield layer default_buffer size, greatly speedup rendering
 
     <Style>
         <Rule>
@@ -226,7 +233,7 @@ def patch_layer_buffer_size(root, buffer=32):
     for layer in root.xpath('./Layer'):
         if not layer.attrib['name'].startswith('label_'):
             count += 1
-            layer.attrib['buffer-size'] = '%d' % buffer
+            layer.attrib['buffer-size'] = '%d' % default_buffer
     print('Patched buffer-size on %d layers' % count)
 
 
@@ -247,34 +254,28 @@ def patch_mapnik_xml(xml, options):
     patch_layer_cache_features(root)
     patch_layer_scale_denominator(root)
     patch_layer_buffer_size(root)
+    patch_postgis(root, options['scale'])
 
     print('Optimized map has %d XML elements (down from %d).' % \
           (len(root.findall('.//*')), num_of_elements))
 
     return ET.tostring(root, pretty_print=True)
 
-
-def load_palette(options):
-    with open('palette.%s.mss' % options['theme']) as fp:
-        palette = fp.read()
-        # patch scale factor
-        palette = re.sub(r'@scale-factor:\s+\d+',
-                         '@scale-factor: %d' % options['scale'],
-                         palette)
-        return palette
-
-
 def parse_options():
     parser = argparse.ArgumentParser(
-            description='Compile Carto generated mapnik xml stylesheets')
+        description='Compile Carto generated mapnik xml stylesheets')
 
     parser.add_argument(
-            'xml', type=str,
-            help='mapnik stylesheet')
+        'xml', type=str,
+        help='mapnik stylesheet')
 
     parser.add_argument(
-            '--effects', dest='effects', action='store_true',
-            help='enable special effects (if any)')
+        '--effects', dest='effects', action='store_true',
+        help='enable special effects (if any)')
+
+    parser.add_argument(
+        '--scale', dest='scale', type=int, default=1,
+        help='scale')
 
     options = parser.parse_args()
     return options
