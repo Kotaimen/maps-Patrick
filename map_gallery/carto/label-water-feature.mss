@@ -46,8 +46,8 @@
 }
 
 
-#label_river_10m   [zoom>=5][featurecla='River'],
-#label_river_na_10m[zoom>=5][featurecla='River'], {
+#label_river_10m   [zoom>=5][zoom<=9][featurecla='River'],
+#label_river_na_10m[zoom>=5][zoom<=9][featurecla='River'], {
     text-name: '';
     text-placement: line;
     [zoom<=4][scalerank<=3],
@@ -67,7 +67,6 @@
     text-spacing: 0;
     text-character-spacing: 1;
     text-dy: 4;
-//    text-simplify: 100;
 //    debug-mode: collision;
 }
 
@@ -153,7 +152,9 @@
 //    debug-mode: collision;
 }
 
-#label_waterway[zoom>=14] {
+#label_waterway_gen0[zoom>=10][zoom<=12],
+#label_waterway[zoom>=13]
+{
     text-name: [name];
     text-face-name: @font-water-feature;
     text-fill: @label-water-feature;

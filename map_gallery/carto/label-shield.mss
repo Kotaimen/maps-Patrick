@@ -9,9 +9,9 @@
     image-filters: scale-hsla(0,1,0,0.66,0,0.8,0,1);
 }
 
-#label_shield_gen1[zoom>=8][zoom<=10],
-#label_shield_gen0[zoom>=11][zoom<=14],
-#label_shield[zoom>=15][zoom<=18]
+#label_shield_gen1[zoom>=9][zoom<=10],
+#label_shield_gen0[zoom>=11][zoom<=13],
+#label_shield[zoom>=14][zoom<=18]
 {
     [zoom=8][sign_type='I'],
     [zoom=9][sign_type='I'],
@@ -19,15 +19,15 @@
     [zoom>=10] {
 
         shield-name: [sign_num];
-        shield-file: url('res/Stage/shield/general-[sign_length]ch.png');
+        shield-file: url('res/Stage/shield/general-[sign_num_length]ch.png');
         shield-transform: scale(0.5, 0.5);
         shield-fill: black;
 
         shield-face-name: 'Roboto Medium';
-        [sign_type!=''][sign_length=1] { shield-face-name: 'Roadgeek 2005 Series F Regular'; }
-        [sign_type!=''][sign_length=2] { shield-face-name: 'Roadgeek 2005 Series E Regular'; }
-        [sign_type!=''][sign_length=3] { shield-face-name: 'Roadgeek 2005 Series C Regular'; }
-        [sign_type!=''][sign_length>=4] { shield-face-name: 'Roadgeek 2005 Series B Regular'; }
+        [sign_type!=''][sign_num_length=1] { shield-face-name: 'Roadgeek 2005 Series F Regular'; }
+        [sign_type!=''][sign_num_length=2] { shield-face-name: 'Roadgeek 2005 Series E Regular'; }
+        [sign_type!=''][sign_num_length=3] { shield-face-name: 'Roadgeek 2005 Series C Regular'; }
+        [sign_type!=''][sign_num_length>=4] { shield-face-name: 'Roadgeek 2005 Series B Regular'; }
 
         shield-placement: line;
         shield-size: 12;
@@ -40,14 +40,14 @@
         // Interstate
         //
         [sign_type='I'] {
-            [sign_length<=2] {
+            [sign_num_length<=2] {
                 shield-file: url('res/Assets/shield/Interstate-2ch.png');
             }
-            [sign_length=3] {
+            [sign_num_length=3] {
                 shield-file: url('res/Assets/shield/Interstate-3ch.png');
                 shield-face-name: 'Roadgeek 2005 Series D Regular';
             }
-            [sign_length>=4] {
+            [sign_num_length>=4] {
                 shield-file: url('res/Assets/shield/Interstate-3ch.png');
                 shield-face-name: 'Roadgeek 2005 Series C Regular'
             }
@@ -59,14 +59,14 @@
         // US Route
         //
         [sign_type='US'] {
-            [sign_length<=2] {
+            [sign_num_length<=2] {
                 shield-file: url('res/Assets/shield/US-Route-2ch.png');
             }
-            [sign_length=3] {
+            [sign_num_length=3] {
                 shield-file: url('res/Assets/shield/US-Route-3ch.png');
                 shield-face-name: 'Roadgeek 2005 Series D Regular';
             }
-            [sign_length>=4] {
+            [sign_num_length>=4] {
                 shield-file: url('res/Assets/shield/US-Route-3ch.png');
                 shield-face-name: 'Roadgeek 2005 Series C Regular';
             }
@@ -219,7 +219,7 @@
         [sign_type='OK'] {
             shield-file: url('res/Assets/shield/Oklahoma-1ch.png');
             shield-dy: -2;
-            [sign_length>=2] { shield-face-name: 'Roadgeek 2005 Series E Regular'; }
+            [sign_num_length>=2] { shield-face-name: 'Roadgeek 2005 Series E Regular'; }
         }
 
         [sign_type='OR'] {
@@ -239,19 +239,20 @@
 
         [sign_type='SD'] {
             shield-file: url('res/Assets/shield/South_Dakota-2ch.png');
+            shield-dy: 1;
         }
 
         [sign_type='SC'] {
             shield-file: url('res/Assets/shield/South_Carolina-3ch.png');
             shield-dy: -3;
             shield-fill: #4067A0;
-            [sign_length>=2] { shield-face-name: 'Roadgeek 2005 Series E Regular'; }
+            [sign_num_length>=2] { shield-face-name: 'Roadgeek 2005 Series E Regular'; }
         }
 
         [sign_type='TN'] {
             shield-file: url('res/Assets/shield/Tennessee-1ch.png');
             shield-dy: 2;
-            [sign_length>=2] { shield-face-name: 'Roadgeek 2005 Series E Regular'; }
+            [sign_num_length>=2] { shield-face-name: 'Roadgeek 2005 Series E Regular'; }
         }
 
         [sign_type='TX'] {
@@ -262,6 +263,7 @@
         [sign_type='UT'] {
             shield-file: url('res/Assets/shield/Utah-2ch.png');
             shield-size: 11;
+            shield-dy: 1;
         }
 
         [sign_type='VT'] {

@@ -12,14 +12,15 @@
 }
 
 #waterway_gen1[zoom>=8][zoom<=10],
-#waterway_gen0[zoom>=11][zoom<=13],
-#waterway[zoom>=14] {
+#waterway_gen0[zoom>=11][zoom<=12],
+#waterway[zoom>=13] {
     [feature='river'],
     [feature='canal'] {
         line-color: @river;
         line-join: round;
-        [zoom=9] { line-width: 0.4; }
-        [zoom=10]{ line-width: 0.6; }
+        [zoom<=8]{ line-width: 0.5; }
+        [zoom=9] { line-width: 0.6; }
+        [zoom=10]{ line-width: 0.7; }
         [zoom=11]{ line-width: 0.8; }
         [zoom=12]{ line-width: 1; }
         [zoom=13]{ line-width: 1.5; }
@@ -31,18 +32,18 @@
     [feature='stream'] {
         line-color: @river;
         line-join: round;
-        [zoom<=12]{ line-width: 0.2; }
+        [zoom<=12]{ line-width: 0.3; }
         [zoom=13] { line-width: 0.4; }
-        [zoom=14] { line-width: 0.4; }
-        [zoom=15] { line-width: 0.6; }
-        [zoom=16] { line-width: 0.8; }
+        [zoom=14] { line-width: 0.5; }
+        [zoom=15] { line-width: 0.8; }
+        [zoom=16] { line-width: 1; }
         [zoom>=17]{ line-width: 1; }
     }
     [feature='ditch'],
     [feature='drain'] {
         line-color: @river;
         line-join: round;
-        [zoom=15] { line-width: 0.1; }
+        [zoom<=15] { line-width: 0.2; }
         [zoom=16] { line-width: 0.3; }
         [zoom>=17]{ line-width: 0.5; }
     }
@@ -66,14 +67,14 @@
 }
 
 #waterbody_gen1[zoom>=8] [zoom<=10],
-#waterbody_gen0[zoom>=11][zoom<=13],
-#waterbody[zoom>=14] {
+#waterbody_gen0[zoom>=11][zoom<=12],
+#waterbody[zoom>=13] {
 
     ::outline {
         line-color: @river;
-        [zoom<=13] { line-width: 1; }
-        [zoom>=11] { line-width: 2; }
         line-join: round;
+        [zoom<=10] { line-width: 1; }
+        [zoom>=11] { line-width: 2; }
     }
     ::fill {
         polygon-fill: @water;

@@ -51,6 +51,12 @@
 @rail-casing:       #bbbbbb;
 
 //
+// NPS
+//
+
+@park-boundary:     #377456;
+
+//
 // Label
 //
 @halo-radius-default:       1;
@@ -86,9 +92,13 @@
 @label-georegion-halo:      @label-halo-default;
 @label-georegion-halo-opacity: 0.5;
 
-@label-park:                #1c381c;
-@label-park-halo:           @label-halo-default;
+@label-park:                #335544;
+@label-park-halo:           #99bbaa;
+@label-park-halo-opacity:   0.5;
 
+@label-poi:                 #665555;
+@label-poi-halo:            @label-halo-default;
+@label-poi-halo-opacity:    0.5;
 
 //
 // Fonts
@@ -104,13 +114,13 @@
 @font-road-minor:           "Roboto Regular";
 @font-railway:              "Roboto Regular";
 
-@font-poi:                  "Roboto Condensed Regular";
+@font-poi:                  "Roboto Bold Italic";
+
 
 @text-size-regular:         14;
 @text-size-small:           12;
 @text-size-large:           16;
 @text-size-xlarge:          20;
-
 
 @line-spacing-fix:          -2;
 

@@ -1,5 +1,3 @@
-
-//#label_road_gen1[zoom>=9][zoom<=10],
 #label_road_gen1[zoom>=11][zoom<=12],
 #label_road_gen0[zoom>=13][zoom<=14],
 #label_road     [zoom>=15],
@@ -41,7 +39,13 @@
             text-name: [name_abbr];
             text-face-name: @font-road-minor;
             text-fill: @label-road-minor;
-            text-spacing: 100;
+            [zoom<=15] {
+                text-size: @text-size-small;
+                text-spacing: 0;
+            }
+            [zoom>=16] {
+                text-spacing: 100;
+            }
         }
     }
 
@@ -54,7 +58,7 @@
 
     [osm_class='route'][feature='ferry'][zoom>=15] {
         text-name: [name];
-        text-face-name: @font-water-feature;
+        text-face-name: @font-road-minor;
         text-fill: @label-water-feature;
         text-halo-radius: 0;
         text-spacing: 200;

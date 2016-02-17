@@ -1,4 +1,4 @@
-#label_admin0[zoom<=7] {
+#label_admin0[zoom>=3][zoom<=7] {
     text-placement: point;
 
     [zoom<=3] { text-size: 16; text-name: '[label_z3]'; }
