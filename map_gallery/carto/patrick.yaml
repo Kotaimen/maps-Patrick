@@ -34,6 +34,7 @@ Stylesheet:
   - "label-water-feature.mss"
   - "label-road.mss"
   - "label-shield.mss"
+  - "label-poi.mss"
 
 _parts:
   extents: &extents
@@ -250,30 +251,6 @@ Layer:
   # National Park Service
   #
 
-  - id: "nps_boundary"
-    name: "nps_boundary"
-    class: ""
-    geometry: "polygon"
-    <<: *extents84
-    Datasource:
-      <<: *nps
-      table: "nps.boundary"
-      simplify_geometries: "true"
-    properties: {}
-    advanced: {}
-
-  - id: "nps_trail"
-    name: "nps_trail"
-    class: ""
-    geometry: "linestring"
-    <<: *extents84
-    Datasource:
-      <<: *nps
-      table: "nps.national_trail"
-      simplify_geometries: "true"
-    properties: {}
-    advanced: {}
-
   - id: "nps_parking"
     name: "nps_parking"
     class: ""
@@ -357,6 +334,34 @@ Layer:
       table: "(SELECT * FROM cultural.osm_road_view WHERE is_tunnel=0) AS foo"
     properties:
       group-by: "layer"
+    advanced: {}
+
+  #
+  # National Park Service
+  #
+
+  - id: "nps_boundary"
+    name: "nps_boundary"
+    class: ""
+    geometry: "polygon"
+    <<: *extents84
+    Datasource:
+      <<: *nps
+      table: "(SELECT * FROM nps.boundary WHERE designatio NOT IN ('National Scenic Trail')) AS foo"
+      simplify_geometries: "true"
+    properties: {}
+    advanced: {}
+
+  - id: "nps_trail"
+    name: "nps_trail"
+    class: ""
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *nps
+      table: "nps.national_trail"
+      simplify_geometries: "true"
+    properties: {}
     advanced: {}
 
   #
@@ -483,6 +488,7 @@ Layer:
     Datasource:
       <<: *nps
       table: "annotation.label_nps_boundary_view"
+      simplify_geometries: "true"
     properties: {}
     advanced: {}
 
@@ -529,6 +535,18 @@ Layer:
           length(name) AS name_length
         FROM annotation.label_geography_regions_view
         ) AS foo
+    properties: {}
+    advanced: {}
+
+  - id: "label_nps_trail"
+    name: "label_nps_trail"
+    class: ""
+    geometry: "linestring"
+    <<: *extents84
+    Datasource:
+      <<: *nps
+      table: "annotation.label_nps_trail"
+      simplify_geometries: "true"
     properties: {}
     advanced: {}
 
@@ -641,6 +659,22 @@ Layer:
       table: "annotation.label_osm_waterway_view"
     properties: {}
     advanced: {}
+
+  #
+  # Transport
+  #
+
+  - id: "label_airport"
+    name: "label_airport"
+    class: "label"
+    geometry: "polygon"
+    <<: *extents
+    Datasource:
+      <<: *osm
+      table: "annotation.label_airport"
+    properties: {}
+    advanced: {}
+
 
   #
   # Road Label

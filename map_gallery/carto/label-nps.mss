@@ -1,75 +1,74 @@
 
-//#nps_trail[zoom>=6][zoom<=9] {
-//    ::line {
-//        line-clip: true;
-//        [display_na = '.* NHT$'] {
-//            line-color: #662222;
-//        }
-//        line-color: #556622;
-//        [zoom=6] { line-width: 3; }
-//        [zoom=7] { line-width: 4; }
-//        [zoom=8] { line-width: 5; }
-//        [zoom=9] { line-width: 6; }
-//        line-join: round;
-//        line-dasharray: 1,1;
-//        line-cap: round;
-//        opacity: 0.5;
-//    }
-//    ::label {
-//        text-clip: true;
-//        text-name: [name];
-//        text-face-name: @font-poi;
-//        text-placement: line;
-//        [name =~ '.* Historic Trail$'] {
-//            text-fill: #662222;
-//        }
-//        text-fill: #552244;
-//        text-halo-radius: @halo-radius-default;
-//        text-halo-fill:  @label-poi-halo;
-//        text-size: @text-size-regular;
-//        text-halo-opacity: @label-poi-halo-opacity;
-//        text-dy: 6;
-//    }
-//}
-
+#label_nps_trail[zoom>=8][zoom<=9] {
+    text-clip: true;
+    text-name: [name];
+    text-face-name: @font-nps;
+    text-placement: line;
+    text-fill: @label-poi;
+    text-halo-radius: @halo-radius-thick;
+    text-halo-fill:  @label-poi-halo;
+    text-size: @text-size-regular;
+    text-halo-opacity: @label-poi-halo-opacity;
+    text-dy: 6;
+    text-smooth: 5;
+}
 
 #label_nps_boundary {
-    [zoom=4][scalerank<=2],
-    [zoom=5] [scalerank<=3],
-    [zoom=6] [scalerank<=4],
-    [zoom=7] [scalerank<=5],
-    [zoom=8] [scalerank<=6],
-    [zoom=9] [scalerank<=7],
-    [zoom=10][scalerank<=8],
-    [zoom=11][scalerank<=9],
-    [zoom=12][scalerank<=10],
-    [zoom=13][scalerank<=11],
-    [zoom=14][scalerank<=12],
-    [zoom>=15]
+    ::label
+    [zoom=5]  [scalerank<=2],
+    [zoom=6]  [scalerank<=3],
+    [zoom=7]  [scalerank<=4],
+    [zoom=8]  [scalerank<=5],
+    [zoom=9]  [scalerank<=6],
     {
-        text-name: '';
-        text-face-name: @font-poi;
+        text-name: [name_abbr];
+        text-face-name: @font-nps;
         text-placement: interior;
         text-fill: @label-park;
         text-halo-radius: @halo-radius-thick;
         text-halo-fill:  @label-park-halo;
         text-halo-opacity: @label-park-halo-opacity;
-        [zoom<=9] {
-            text-name: [name_abbr];
-            text-size: @text-size-regular;
-            text-wrap-width: 46;
-        }
-        [zoom>=10][zoom<=12] {
-            text-size: @text-size-large;
-            text-wrap-width: 66;
-            text-name: [name];
-        }
-        [zoom>=13] {
-            text-size: @text-size-xlarge;
-            text-wrap-width: 88;
-            text-name: [name];
-        }
+        text-size: @text-size-regular;
+        text-wrap-width: 46;
     }
+    ::label
+    [zoom=10] [scalerank<=7],
+    [zoom=11] [scalerank<=8],
+    [zoom=12] [scalerank<=9],
+    [zoom=13] [scalerank<=10],
+    [zoom=14] [scalerank<=11],
+    [zoom>=15][scalerank<=100],
+    {
+        text-name: [name];
+        text-face-name: @font-nps;
+        text-placement: interior;
+        text-fill: @label-park;
+        text-halo-radius: @halo-radius-thick;
+        text-halo-fill:  @label-park-halo;
+        text-halo-opacity: @label-park-halo-opacity;
+        text-size: @text-size-large;
+        text-wrap-width: 66;
+    }
+
+    ::dot
+    [zoom=4] [scalerank>1],
+    [zoom=5] [scalerank>2],
+    [zoom=6] [scalerank>3],
+    [zoom=7] [scalerank>4],
+    [zoom=8] [scalerank>5],
+    [zoom=9] [scalerank>6],
+    [zoom=10][scalerank>7],
+    [zoom=11][scalerank>8],
+    [zoom=12][scalerank>9],
+    [zoom=13][scalerank>10],
+    [zoom=14][scalerank>11],
+    {
+        [zoom=4] { marker-transform: scale(0.5, 0.5); }
+        [zoom=5] { marker-transform: scale(0.7, 0.7); }
+        marker-file: url('res/Assets/marker/park-circle.svg');
+        marker-ignore-placement: true;
+    }
+
 }
 
 #label_nps_poi[zoom>=12] {
@@ -90,7 +89,7 @@
         shield-text-dy: 14;
 
         shield-unlock-image: true;
-        shield-face-name: @font-poi;
+        shield-face-name: @font-nps;
 
         shield-placement-type: simple;
         shield-placement: point;

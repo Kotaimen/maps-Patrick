@@ -103,6 +103,7 @@
 //
 // Fonts
 //
+
 @font-place:                "Roboto Condensed Regular";
 @font-admin:                "Roboto Black";
 @font-physical:             "Libre Baskerville Italic";
@@ -114,8 +115,8 @@
 @font-road-minor:           "Roboto Regular";
 @font-railway:              "Roboto Regular";
 
-@font-poi:                  "Roboto Bold Italic";
-
+@font-poi:                  "Roboto Condensed Bold";
+@font-nps:                  "Roboto Bold Italic";
 
 @text-size-regular:         14;
 @text-size-small:           12;
