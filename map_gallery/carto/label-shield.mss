@@ -16,7 +16,9 @@
     [zoom=8][sign_type='I'],
     [zoom=9][sign_type='I'],
     [zoom=9][sign_type='US'],
-    [zoom>=10] {
+    [zoom=10][sign_type='I'],
+    [zoom=10][sign_type='US'],
+    [zoom>=11] {
 
         shield-name: [sign_num];
         shield-file: url('res/Stage/shield/general-[sign_num_length]ch.png');
