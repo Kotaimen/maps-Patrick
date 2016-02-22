@@ -23,44 +23,47 @@
     }
 }
 
-#nps_trail[zoom>=6][zoom<=9] {
+#nps_trail[zoom>=5][zoom<=9] {
 
     fill/line-color: @label-halo-default;
-    fill/line-opacity: 0.33;
+    fill/line-opacity: 0.5;
+
+    [zoom=5] { fill/line-width: 3+2; }
     [zoom=6] { fill/line-width: 4+2; }
     [zoom=7] { fill/line-width: 5+2; }
     [zoom=8] { fill/line-width: 6+2; }
     [zoom=9] { fill/line-width: 7+2; }
 
 
-    [display_na='Appalachian NST'] { line-color: #12837F; }
-    [display_na='Arizona NST'] { line-color: #179BAB; }
-    [display_na='California NHT'] { line-color: #B92246; }
-    [display_na='Continental Divide NST'] { line-color: #12837F; }
-    [display_na='Juan Bautista De Anza NHT'] { line-color: #997162; }
-    [display_na='Florida NST'] { line-color: #12837F; }
-    [display_na='Ice Age NST'] { line-color: #6AA744; }
-    [display_na='Captain John Smith Chesapeake NHT'] { line-color: #12837F; }
-    [display_na='Lewis and Clark NHT'] { line-color: #D2825F; }
-    [display_na='Mormon Pioneer NHT'] { line-color: #E3BD37; }
-    [display_na='Natchez Trace NST'] { line-color: #12837F; }
-    [display_na='New England NST'] { line-color: #179BAB; }
-    [display_na='Nez Perce NHT'] { line-color: #4485C2; }
-    [display_na='North Country NST'] { line-color: #179BAB; }
-    [display_na='Old Spanish NHT'] { line-color: #D2825F; }
-    [display_na='Oregon NHT'] { line-color: #997162; }
-    [display_na='Overmountain Victory NHT'] { line-color: #B92246; }
-    [display_na='Pacific Crest NST'] { line-color: #12837F; }
-    [display_na='Pacific Northwest NST'] { line-color: #6AA744; }
-    [display_na='Pony Express NHT'] { line-color: #4485C2; }
-    [display_na='Santa Fe NHT'] { line-color: #936E9E; }
-    [display_na='Selma to Montgomery NHT'] { line-color: #936E9E; }
-    [display_na='Star Spangled Banner NST'] { line-color: #4485C2; }
-    [display_na='El Camino Real De Tierra Adentro NHT'] { line-color: #B92246; }
-    [display_na='Trail of Tears NHT'] { line-color: #997162; }
-    [display_na='Washington Rochambeau Revolutionary Route NHT'] { line-color: #B92246; }
-    [display_na='El Camino Real De Los Tejas NHT'] { line-color: #D2825F; }
+    [display_na='Appalachian NST'] { line-color: #008877; }
+    [display_na='Arizona NST'] { line-color: #117788; }
+    [display_na='California NHT'] { line-color: #aa2255; }
+    [display_na='Continental Divide NST'] { line-color: #008877; }
+    [display_na='Juan Bautista De Anza NHT'] { line-color: #995544; }
+    [display_na='Florida NST'] { line-color: #008877; }
+    [display_na='Ice Age NST'] { line-color: #448811; }
+    [display_na='Captain John Smith Chesapeake NHT'] { line-color: #008877; }
+    [display_na='Lewis and Clark NHT'] { line-color: #dd6644; }
+    [display_na='Mormon Pioneer NHT'] { line-color: #ddbb22; }
+    [display_na='Natchez Trace NST'] { line-color: #008877; }
+    [display_na='New England NST'] { line-color: #117788; }
+    [display_na='Nez Perce NHT'] { line-color: #4488bb; }
+    [display_na='North Country NST'] { line-color: #117788; }
+    [display_na='Old Spanish NHT'] { line-color: #dd6644; }
+    [display_na='Oregon NHT'] { line-color: #995544; }
+    [display_na='Overmountain Victory NHT'] { line-color: #aa2255; }
+    [display_na='Pacific Crest NST'] { line-color: #008877; }
+    [display_na='Pacific Northwest NST'] { line-color: #448811; }
+    [display_na='Pony Express NHT'] { line-color: #4488bb; }
+    [display_na='Santa Fe NHT'] { line-color: #994499; }
+    [display_na='Selma to Montgomery NHT'] { line-color: #994499; }
+    [display_na='Star Spangled Banner NST'] { line-color: #4488bb; }
+    [display_na='El Camino Real De Tierra Adentro NHT'] { line-color: #aa2255; }
+    [display_na='Trail of Tears NHT'] { line-color: #995544; }
+    [display_na='Washington Rochambeau Revolutionary Route NHT'] { line-color: #aa2255; }
+    [display_na='El Camino Real De Los Tejas NHT'] { line-color: #dd6644; }
 
+    [zoom=5] { line-width: 3; }
     [zoom=6] { line-width: 4; }
     [zoom=7] { line-width: 5; }
     [zoom=8] { line-width: 6; }
@@ -68,8 +71,7 @@
 
     line-clip: true;
     line-join: round;
-    line-dasharray: 1,1;
-    opacity: 0.8;
+    line-dasharray: 2,1;
 }
 
 #nps_building[zoom>=13],
