@@ -39,12 +39,12 @@
             text-name: [name_abbr];
             text-face-name: @font-road-minor;
             text-fill: @label-road-minor;
-            [zoom<=15] {
+            [zoom<=14] {
                 text-size: @text-size-small;
                 text-spacing: 0;
             }
-            [zoom>=16] {
-                text-spacing: 100;
+            [zoom>=15] {
+                text-spacing: 200;
             }
         }
     }
