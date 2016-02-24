@@ -1,17 +1,17 @@
 
-#label_nps_trail[zoom>=8][zoom<=9] {
-    text-clip: true;
-    text-name: [name];
-    text-face-name: @font-nps;
-    text-placement: line;
-    text-fill: @label-poi;
-    text-halo-radius: @halo-radius-thick;
-    text-halo-fill:  @label-poi-halo;
-    text-size: @text-size-regular;
-    text-halo-opacity: @label-poi-halo-opacity;
-    text-dy: 6;
-    text-smooth: 5;
-}
+//#label_nps_trail[zoom>=8][zoom<=9] {
+//    text-clip: true;
+//    text-name: [name];
+//    text-face-name: @font-nps;
+//    text-placement: line;
+//    text-fill: @label-poi;
+//    text-halo-radius: @halo-radius-thick;
+//    text-halo-fill:  @label-poi-halo;
+//    text-size: @text-size-regular;
+//    text-halo-opacity: @label-poi-halo-opacity;
+//    text-dy: 6;
+//    text-smooth: 5;
+//}
 
 #label_nps_boundary {
     ::label
@@ -48,25 +48,6 @@
         text-halo-opacity: @label-park-halo-opacity;
         text-size: @text-size-large;
         text-wrap-width: 66;
-    }
-
-    ::dot
-    [zoom=4] [scalerank>1],
-    [zoom=5] [scalerank>2],
-    [zoom=6] [scalerank>3],
-    [zoom=7] [scalerank>4],
-    [zoom=8] [scalerank>5],
-    [zoom=9] [scalerank>6],
-    [zoom=10][scalerank>7],
-    [zoom=11][scalerank>8],
-    [zoom=12][scalerank>9],
-    [zoom=13][scalerank>10],
-    [zoom=14][scalerank>11],
-    {
-        [zoom=4] { marker-transform: scale(0.5, 0.5); }
-        [zoom=5] { marker-transform: scale(0.7, 0.7); }
-        marker-file: url('res/Assets/marker/park-circle.svg');
-        marker-ignore-placement: true;
     }
 
 }

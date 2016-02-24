@@ -352,17 +352,28 @@ Layer:
     properties: {}
     advanced: {}
 
-  - id: "nps_trail"
-    name: "nps_trail"
+  - id: "nps_dot"
+    name: "nps_dot"
     class: ""
-    geometry: "linestring"
+    geometry: "polygon"
     <<: *extents84
     Datasource:
       <<: *nps
-      table: "nps.national_trail"
-      simplify_geometries: "true"
+      table: "annotation.label_nps_boundary_view"
     properties: {}
     advanced: {}
+
+#  - id: "nps_trail"
+#    name: "nps_trail"
+#    class: ""
+#    geometry: "linestring"
+#    <<: *extents84
+#    Datasource:
+#      <<: *nps
+#      table: "nps.national_trail"
+#      simplify_geometries: "true"
+#    properties: {}
+#    advanced: {}
 
   #
   # Admin boundary
@@ -488,7 +499,6 @@ Layer:
     Datasource:
       <<: *nps
       table: "annotation.label_nps_boundary_view"
-      simplify_geometries: "true"
     properties: {}
     advanced: {}
 
@@ -538,17 +548,17 @@ Layer:
     properties: {}
     advanced: {}
 
-  - id: "label_nps_trail"
-    name: "label_nps_trail"
-    class: ""
-    geometry: "linestring"
-    <<: *extents84
-    Datasource:
-      <<: *nps
-      table: "annotation.label_nps_trail"
-      simplify_geometries: "true"
-    properties: {}
-    advanced: {}
+#  - id: "label_nps_trail"
+#    name: "label_nps_trail"
+#    class: ""
+#    geometry: "linestring"
+#    <<: *extents84
+#    Datasource:
+#      <<: *nps
+#      table: "annotation.label_nps_trail"
+#      simplify_geometries: "true"
+#    properties: {}
+#    advanced: {}
 
   - id: "label_ocean_region_10m"
     name: "label_ocean_region_10m"
