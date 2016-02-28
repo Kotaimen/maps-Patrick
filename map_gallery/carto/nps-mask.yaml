@@ -33,31 +33,14 @@ _parts:
     extent: *world
     srs-name: "WGS84"
     srs: "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
-    
-  ne2: &ne2
-    type: "postgis"
-    dbname: "naturalearth2"
-    srid: "4326"
-    extent: *world
-    key_field: "gid"
-    geometry_field: "geometry"
 
   nps: &nps
     type: "postgis"
-    dbname: "stonemason_nps"
+    dbname: "patrick_nps"
     srid: "4326"
     extent: *world
     key_field: "gid"
     geometry_field: "geometry"
-
-  osm: &osm
-    type: "postgis"
-    dbname: "stonemason_osm"
-    srid: "3857"
-    extent: [-20037508.34,-20037508.34,20037508.34,20037508.34]
-    key_field: "id"
-    geometry_field: "geometry"
-
 
 Layer:
 
