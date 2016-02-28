@@ -17,7 +17,7 @@
 // Road
 //
 @road-dash:         8, 3;
-@casing:            fadeout(#c4c1b5, 80%);
+@casing:            fadeout(#c4c1b5, 67%);
 
 @ferry-line:        @river;
 
