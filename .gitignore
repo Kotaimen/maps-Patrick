@@ -63,7 +63,7 @@ target/
 log/
 
 # Carto temporary files and resources
-map_gallery/carto/data/
+map_gallery/carto/data/*.index
 map_gallery/carto/fonts/
 map_gallery/carto/*.mml
 map_gallery/carto/*.xml
