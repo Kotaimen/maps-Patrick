@@ -379,25 +379,25 @@ Layer:
   # Admin boundary
   #
 
-  - id: "admin1_boundary_10m"
-    name: "admin1_boundary_10m"
+  - id: "admin1_boundary"
+    name: "admin1_boundary"
     class: ""
     geometry: "linestring"
-    <<: *extents84
+    <<: *extents
     Datasource:
-      <<: *ne2
-      table: "ne_10m_cultural.ne_10m_admin_1_states_provinces_lines_shp"
+      file: "data/sa1m_admin_1_boundary_line"
+      type: "shape"
     properties: {}
     advanced: {}
 
-  - id: "admin0_boundary_10m"
-    name: "admin0_boundary_10m"
+  - id: "admin0_boundary"
+    name: "admin0_boundary"
     class: ""
     geometry: "linestring"
-    <<: *extents84
+    <<: *extents
     Datasource:
-      <<: *ne2
-      table: "ne_10m_cultural.ne_10m_admin_0_boundary_lines_land"
+      file: "data/sa1m_admin_0_boundary_line"
+      type: "shape"
     properties: {}
     advanced: {}
 
@@ -753,5 +753,24 @@ Layer:
     Datasource:
       <<: *osm
       table: "annotation.label_osm_shield_view"
+  - id: "label_admin0_boundary"
+    name: "label_admin0_boundary"
+    class: ""
+    geometry: "linestring"
+    <<: *extents
+    Datasource:
+      file: "data/sa1m_admin_0_boundary_line_label.shp"
+      type: "shape"
+    properties: {}
+    advanced: {}
+
+  - id: "label_admin1_boundary"
+    name: "label_admin1_boundary"
+    class: ""
+    geometry: "linestring"
+    <<: *extents
+    Datasource:
+      file: "data/sa1m_admin_1_boundary_line_label.shp"
+      type: "shape"
     properties: {}
     advanced: {}
