@@ -56,6 +56,7 @@ for scale in [1, 2]:
             'prototype': 'image',
 
             'layers': {
+
                 'hillshading': {
                     'prototype': 'data.storage.s3',
                     'stride': 8,
@@ -67,13 +68,13 @@ for scale in [1, 2]:
                 },
 
                 'mask': {
-                    'prototype': 'mapnik',
+                    'prototype': 'image.input.mapnik',
                     'style_sheet': '{{ theme_root }}/carto/nps-mask.xml',
                     'base_path': '{{ theme_root }}/carto',
                 },
 
                 'roadmap': {
-                    'prototype': 'mapnik',
+                    'prototype': 'image.input.mapnik',
                     'style_sheet': '{{ theme_root }}/carto/patrick%s.xml' % tag,
                     'base_path': '{{ theme_root }}/carto',
                     'default_scale': scale,
@@ -81,7 +82,7 @@ for scale in [1, 2]:
                 },
 
                 'root': {
-                    'prototype': 'imagemagick',
+                    'prototype': 'image.composite.imagemagick',
                     'sources': [
                         'hillshading',
                         'mask',
@@ -95,7 +96,17 @@ for scale in [1, 2]:
                             -compose Over -composite
                        -define png:color-type=6
                     '''
+                },
+
+                'root_': {
+                    'prototype': 'image.composite.alphacomposer',
+                    'sources': [
+                        'hillshading',
+                        'roadmap'
+                    ],
                 }
+
+
             }
 
         }

@@ -127,7 +127,7 @@ schema = dict(
             'layers': {
 
                 'root': {
-                    'prototype': 'relief.swiss',
+                    'prototype': 'image.input.relief.swiss',
                     'datasource': ReliefIndexSelector(),
                     'scale': 1,
                     'buffer': 8,
