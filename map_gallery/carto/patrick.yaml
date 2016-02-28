@@ -37,15 +37,8 @@ Stylesheet:
   - "label-poi.mss"
 
 _parts:
-
-  world3857: &world3857
-    - -20037508.34
-    - -20037508.34
-    - 20037508.34
-    - 20037508.34
-
   extents: &extents
-    extent: *world3857
+    extent: [-20037508.34,-20037508.34,20037508.34,20037508.34]
     srs-name: "EPSG:3857"
     srs: "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
 
@@ -64,7 +57,7 @@ _parts:
 
   nps: &nps
     type: "postgis"
-    dbname: "patrick_nps"
+    dbname: "stonemason_nps"
     srid: "4326"
     extent: *world
     key_field: "gid"
@@ -72,35 +65,12 @@ _parts:
 
   osm: &osm
     type: "postgis"
-    dbname: "patrick_osm"
+    dbname: "stonemason_osm"
     srid: "3857"
-    extent: *world3857
+    extent: [-20037508.34,-20037508.34,20037508.34,20037508.34]
     key_field: "id"
     geometry_field: "geometry"
 
-  usgs: &usgs
-    type: "postgis"
-    dbname: "patrick_usgs"
-    srid: "4326"
-    extent: *world
-    key_field: "gid"
-    geometry_field: "geometry"
-
-  gnis: &gnis
-    type: "postgis"
-    dbname: "patrick_usgs"
-    srid: "3857"
-    extent: *world3857
-    key_field: "gid"
-    geometry_field: "geometry"
-
-  patrick: &patrick
-    type: "postgis"
-    dbname: "patrick_custom"
-    srid: "3857"
-    extent: *world3857
-    key_field: "id"
-    geometry_field: "geometry"
 
 Layer:
 
@@ -125,7 +95,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "hydrography.osm_ocean"
+      table: "physical.osm_ocean"
     properties: {}
     advanced: {}
 
@@ -196,7 +166,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "hydrography.osm_waterway_gen1"
+      table: "physical.osm_waterway_gen1"
     properties: {}
     advanced: {}
 
@@ -207,7 +177,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "hydrography.osm_waterway_gen0"
+      table: "physical.osm_waterway_gen0"
     properties: {}
     advanced: {}
 
@@ -218,7 +188,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "hydrography.osm_waterway"
+      table: "physical.osm_waterway"
     properties: {}
     advanced: {}
 
@@ -251,7 +221,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "hydrography.osm_waterbody_gen1"
+      table: "physical.osm_waterbody_gen1"
     properties: {}
     advanced: {}
 
@@ -262,7 +232,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "hydrography.osm_waterbody_gen0"
+      table: "physical.osm_waterbody_gen0"
     properties: {}
     advanced: {}
 
@@ -273,7 +243,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "hydrography.osm_waterbody"
+      table: "physical.osm_waterbody"
     properties: {}
     advanced: {}
 
@@ -314,7 +284,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "(SELECT * FROM transportation.osm_road_gen1_view) AS foo"
+      table: "(SELECT * FROM cultural.osm_road_gen1_view) AS foo"
     properties: {}
     advanced: {}
 
@@ -325,7 +295,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "(SELECT * FROM transportation.osm_road_gen0_view WHERE is_tunnel=1) AS foo"
+      table: "(SELECT * FROM cultural.osm_road_gen0_view WHERE is_tunnel=1) AS foo"
     properties:
       group-by: "layer"
     advanced: {}
@@ -337,7 +307,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "(SELECT * FROM transportation.osm_road_gen0_view) AS foo"
+      table: "(SELECT * FROM cultural.osm_road_gen0_view) AS foo"
     properties:
       group-by: "layer"
     advanced: {}
@@ -349,7 +319,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "(SELECT * FROM transportation.osm_road_view WHERE is_tunnel=1) AS foo"
+      table: "(SELECT * FROM cultural.osm_road_view WHERE is_tunnel=1) AS foo"
     properties:
       group-by: "layer"
     advanced: {}
@@ -361,7 +331,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "(SELECT * FROM transportation.osm_road_view WHERE is_tunnel=0) AS foo"
+      table: "(SELECT * FROM cultural.osm_road_view WHERE is_tunnel=0) AS foo"
     properties:
       group-by: "layer"
     advanced: {}
@@ -389,7 +359,7 @@ Layer:
     <<: *extents84
     Datasource:
       <<: *nps
-      table: "nps.label_nps_boundary_view"
+      table: "annotation.label_nps_boundary_view"
     properties: {}
     advanced: {}
 
@@ -480,7 +450,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "administration.label_osm_place_lv0_view"
+      table: "annotation.label_osm_place_lv0_view"
     properties: {}
     advanced: {}
 
@@ -491,7 +461,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "administration.label_osm_place_lv1_view"
+      table: "annotation.label_osm_place_lv1_view"
     properties: {}
     advanced: {}
 
@@ -502,7 +472,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "administration.label_osm_place_lv2_view"
+      table: "annotation.label_osm_place_lv2_view"
     properties: {}
     advanced: {}
 
@@ -513,7 +483,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "administration.label_osm_place_lv3_view"
+      table: "annotation.label_osm_place_lv3_view"
     properties: {}
     advanced: {}
 
@@ -528,7 +498,7 @@ Layer:
     <<: *extents84
     Datasource:
       <<: *nps
-      table: "nps.label_nps_boundary_view"
+      table: "annotation.label_nps_boundary_view"
     properties: {}
     advanced: {}
 
@@ -539,7 +509,7 @@ Layer:
     <<: *extents84
     Datasource:
       <<: *nps
-      table: "nps.label_nps_poi_view"
+      table: "annotation.label_nps_poi_view"
     properties: {}
     advanced: {}
 
@@ -567,13 +537,13 @@ Layer:
     geometry: "linestring"
     <<: *extents
     Datasource:
-      <<: *patrick
+      <<: *osm
       table: |-
         (SELECT
           *,
           st_length(geometry) / NULLIF(!pixel_width!::real, 0) AS arc_length,
           length(name) AS name_length
-        FROM geography.label_geography_regions_view
+        FROM annotation.label_geography_regions_view
         ) AS foo
     properties: {}
     advanced: {}
@@ -585,7 +555,7 @@ Layer:
 #    <<: *extents84
 #    Datasource:
 #      <<: *nps
-#      table: "nps.label_nps_trail"
+#      table: "annotation.label_nps_trail"
 #      simplify_geometries: "true"
 #    properties: {}
 #    advanced: {}
@@ -596,13 +566,13 @@ Layer:
     geometry: "linestring"
     <<: *extents
     Datasource:
-      <<: *patrick
+      <<: *osm
       table: |-
         (SELECT
           *,
           st_length(geometry) / NULLIF(!pixel_width!::real, 0) AS arc_length,
           length(name) AS name_length
-        FROM geography.label_geography_marine_view
+        FROM annotation.label_geography_marine_view
         ) AS foo
     properties: {}
     advanced: {}
@@ -640,7 +610,7 @@ Layer:
         (SELECT
           *,
           area / NULLIF(!pixel_width!::real*!pixel_height!::real, 0) AS pixels
-        FROM hydrography.label_osm_waterbody_point_view
+        FROM annotation.label_osm_waterbody_point_view
         WHERE area >= NULLIF(!pixel_width!::real*!pixel_height!::real * 128, 0)
         ) AS foo
     properties: {}
@@ -652,11 +622,11 @@ Layer:
     geometry: "point"
     <<: *extents
     Datasource:
-      <<: *gnis
+      <<: *osm
       table: |-
         (SELECT
           *
-          FROM hypsography.label_gnis_elevation_view
+          FROM annotation.label_gnis_elevation
         ) AS foo
     properties: {}
     advanced: {}
@@ -672,7 +642,7 @@ Layer:
         (SELECT
           *,
           area / NULLIF(!pixel_width!::real*!pixel_height!::real, 0) AS pixels
-        FROM hydrography.label_osm_waterbody_line_view
+        FROM annotation.label_osm_waterbody_line_view
         WHERE area >= NULLIF(!pixel_width!::real*!pixel_height!::real * 4096, 0)
         ) AS foo
     properties: {}
@@ -685,7 +655,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "hydrography.label_osm_waterway_gen0_view"
+      table: "annotation.label_osm_waterway_gen0_view"
     properties: {}
     advanced: {}
 
@@ -696,7 +666,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "hydrography.label_osm_waterway_view"
+      table: "annotation.label_osm_waterway_view"
     properties: {}
     advanced: {}
 
@@ -711,7 +681,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "transportation.label_airport_view"
+      table: "annotation.label_airport"
     properties: {}
     advanced: {}
 
@@ -727,7 +697,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "transportation.label_osm_road_gen1_view"
+      table: "annotation.label_osm_road_gen1_view"
     properties: {}
     advanced: {}
 
@@ -738,7 +708,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "transportation.label_osm_road_gen0_view"
+      table: "annotation.label_osm_road_gen0_view"
     properties: {}
     advanced: {}
 
@@ -749,7 +719,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "transportation.label_osm_road_view"
+      table: "annotation.label_osm_road_view"
     properties: {}
     advanced: {}
 
@@ -760,7 +730,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "transportation.label_osm_shield_gen1_view"
+      table: "annotation.label_osm_shield_gen1_view"
     properties: {}
     advanced: {}
 
@@ -771,7 +741,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "transportation.label_osm_shield_gen0_view"
+      table: "annotation.label_osm_shield_gen0_view"
     properties: {}
     advanced: {}
 
@@ -782,11 +752,7 @@ Layer:
     <<: *extents
     Datasource:
       <<: *osm
-      table: "transportation.label_osm_shield_view"
-    properties: {}
-    advanced: {}
-
-
+      table: "annotation.label_osm_shield_view"
   - id: "label_admin0_boundary"
     name: "label_admin0_boundary"
     class: ""
