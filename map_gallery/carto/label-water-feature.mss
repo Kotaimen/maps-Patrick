@@ -166,4 +166,5 @@
     text-placement: line;
     text-character-spacing: 1;
     text-dy: 4;
+    text-smooth: 5;
 }
