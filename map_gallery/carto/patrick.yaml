@@ -81,14 +81,6 @@ _parts:
   usgs: &usgs
     type: "postgis"
     dbname: "patrick_usgs"
-    srid: "4326"
-    extent: *world
-    key_field: "gid"
-    geometry_field: "geometry"
-
-  gnis: &gnis
-    type: "postgis"
-    dbname: "patrick_usgs"
     srid: "3857"
     extent: *world3857
     key_field: "gid"
@@ -99,7 +91,7 @@ _parts:
     dbname: "patrick_custom"
     srid: "3857"
     extent: *world3857
-    key_field: "id"
+    key_field: "gid"
     geometry_field: "geometry"
 
 Layer:
@@ -389,7 +381,7 @@ Layer:
     <<: *extents84
     Datasource:
       <<: *nps
-      table: "nps.label_nps_boundary_view"
+      table: "nps.label_boundary_view"
     properties: {}
     advanced: {}
 
@@ -528,7 +520,7 @@ Layer:
     <<: *extents84
     Datasource:
       <<: *nps
-      table: "nps.label_nps_boundary_view"
+      table: "nps.label_boundary_view"
     properties: {}
     advanced: {}
 
@@ -539,7 +531,7 @@ Layer:
     <<: *extents84
     Datasource:
       <<: *nps
-      table: "nps.label_nps_poi_view"
+      table: "nps.label_poi_view"
     properties: {}
     advanced: {}
 
@@ -652,7 +644,7 @@ Layer:
     geometry: "point"
     <<: *extents
     Datasource:
-      <<: *gnis
+      <<: *usgs
       table: |-
         (SELECT
           *
