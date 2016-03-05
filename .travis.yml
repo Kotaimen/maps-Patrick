@@ -4,9 +4,9 @@ sudo: required
 dist: trusty
 
 install:
-  - pip install -rrequirements.txt
-  - npm install -g carto
-  - apt-get install imagemagick
+  - sudo apt-get install -yq imagemagick python-lxml
+  - sudo pip install -rrequirements.txt
+  - sudo npm install -g carto
 
 script:
   - cd map_gallery && make
