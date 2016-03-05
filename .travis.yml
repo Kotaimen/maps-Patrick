@@ -4,14 +4,13 @@ sudo: required
 dist: trusty
 
 install:
-  - sudo apt-get install -yq imagemagick python-lxml
-  - sudo pip install -rrequirements.txt
   - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
-  - sudo apt-get install -yq nodejs
+  - sudo apt-get install -yq nodejs imagemagick python-lxml
+  - sudo pip install -rrequirements.txt
   - sudo npm install -g carto
 
 script:
-  - cd map_gallery; make
+  - cd map_gallery && make
 
 notifications:
   email:
