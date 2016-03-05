@@ -21,7 +21,6 @@ clean:
 
 carto/res/Stage/tint.png:
 	mkdir -p carto/res/stage
-	convert --version
 	convert -size 30x256 gradient: -rotate 90 -interpolate Bicubic \( +size xc:#334466  xc:grey50 xc:#f7ba9d +append \) -clut $@
 
 carto/data/continents.index:
