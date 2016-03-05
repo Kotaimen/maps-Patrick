@@ -162,7 +162,7 @@ fg = '#665555'
 for n, ch in enumerate(chars):
     image = render_glyph(ch, font1, bg, fg)
     filename = 'Stage/nps/%s.png' % names[n]
-    print n + 33, ch, repr(ch), filename
+    # print n + 33, ch, repr(ch), filename
     image.save(filename)
 
 # XXX set encoding to Apple Roman solves incorrectly rendered 'Campground'

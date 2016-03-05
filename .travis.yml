@@ -10,9 +10,9 @@ before_install:
   - docker build -t patrick .
 
 script:
-  - mkdir -B map_gallery/carto/res/Stage
+  - mkdir -p map_gallery/carto/res/Stage
   - convert -size 30x256 gradient: -rotate 90 -interpolate Bicubic \( +size xc:#334466  xc:grey50 xc:#f7ba9d +append \) -clut map_gallery/carto/res/Stage/tint.png
-  - docker run -v `pwd`:/tmp/build --workdir /tmp/build/map_gallery --entry-point make patrick -B
+  - docker run -v `pwd`:/tmp/build --workdir /tmp/build/map_gallery --entrypoint make patrick -B
 
 notifications:
   email:
