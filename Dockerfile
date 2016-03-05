@@ -3,10 +3,6 @@ FROM ubuntu:14.04
 MAINTAINER  Kotaimen <kotaimen.c@gmail.com>
 ENV         DEBIAN_FRONTEND noninteractive
 
-RUN         set -x \
-            && mv /etc/apt/sources.list /etc/apt/sources.list.back \
-            && sed s/archive.ubuntu.com/ap-northeast-1.ec2.archive.ubuntu.com/ /etc/apt/sources.list.back > /etc/apt/sources.list
-
 WORKDIR     /tmp/
 
 ADD         requirements.txt ./

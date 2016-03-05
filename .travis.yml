@@ -7,10 +7,10 @@ services:
   - docker
 
 before_install:
-  - docker-compose build
+  - docker build -t patrick .
 
 script:
-  - docker-compose run patrick -B
+  - docker run -v `pwd`:/tmp/build --workdir /tmp/build/map_gallery --entry-point make patrick -B
 
 notifications:
   email:
