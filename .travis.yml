@@ -8,8 +8,8 @@ services:
 
 before_install:
   - docker build -t patrick .
-  - cd map_gallery/carto; wget http://cdn.knrdesign.co/dist/fonts/patrick-mark1-fonts.zip
-  - cd map_gallery/carto; unzip patrick-mark1-fonts.zip
+  - wget http://cdn.knrdesign.co/dist/fonts/patrick-mark1-fonts.zip
+  - unzip patrick-mark1-fonts.zip -d map_gallery/carto
 
 script:
   - mkdir -p map_gallery/carto/res/Stage
