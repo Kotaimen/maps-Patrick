@@ -12,6 +12,7 @@ before_install:
   - unzip patrick-mark1-fonts.zip -d map_gallery/carto
 
 script:
+  - mkdir -p map_gallery/carto/res/Stage
   - docker run -v `pwd`:/tmp/build --workdir /tmp/build/map_gallery --entrypoint make patrick -B
 
 notifications:
