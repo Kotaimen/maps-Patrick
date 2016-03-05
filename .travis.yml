@@ -3,11 +3,11 @@
 sudo: required
 dist: trusty
 
-language: node_js
-
 install:
   - sudo apt-get install -yq imagemagick python-lxml
   - sudo pip install -rrequirements.txt
+  - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+  - sudo apt-get install -yq nodejs
   - sudo npm install -g carto
 
 script:
