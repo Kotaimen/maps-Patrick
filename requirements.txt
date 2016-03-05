@@ -1,1 +1,3 @@
-lxml>=3.0
+lxml
+PyYAML
+Pillow

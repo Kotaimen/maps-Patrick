@@ -3,14 +3,18 @@
 sudo: required
 dist: trusty
 
-install:
-  - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
-  - sudo apt-get install -yq nodejs imagemagick python-lxml
-  - sudo pip install -rrequirements.txt
-  - sudo npm install -g carto
+services:
+  - docker
+
+before_install:
+  - docker build -t patrick .
+  - wget http://cdn.knrdesign.co/dist/fonts/patrick-mark1-fonts.zip
+  - unzip patrick-mark1-fonts.zip -d map_gallery/carto
 
 script:
-  - cd map_gallery && make
+  - mkdir -p map_gallery/carto/res/Stage
+  - convert -size 30x256 'gradient:' -rotate 90 -interpolate Bicubic \( +size xc:#334466  xc:grey50 xc:#f7ba9d +append \) -clut map_gallery/carto/res/Stage/tint.png
+  - docker run -v `pwd`:/tmp/build --workdir /tmp/build/map_gallery --entrypoint make patrick -B
 
 notifications:
   email:
