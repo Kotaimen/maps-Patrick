@@ -3,14 +3,14 @@
 sudo: required
 dist: trusty
 
-install:
-  - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
-  - sudo apt-get install -yq nodejs imagemagick python-lxml
-  - sudo pip install -rrequirements.txt
-  - sudo npm install -g carto
+services:
+  - docker
+
+before_install:
+  - docker-compose build
 
 script:
-  - cd map_gallery && make
+  - docker-compose run patrick -B
 
 notifications:
   email:

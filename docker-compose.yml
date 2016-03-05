@@ -1,0 +1,6 @@
+patrick:
+  build: .
+  volumes:
+   - .:/tmp/map/
+  entrypoint: make
+  working_dir: /tmp/map/map_gallery/
