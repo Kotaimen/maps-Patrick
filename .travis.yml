@@ -1,0 +1,18 @@
+#Travis-ci config file
+
+sudo: required
+dist: trusty
+
+install:
+  - pip install -rrequirements.txt
+  - npm install -g carto
+  - apt-get install imagemagick
+
+script:
+  - cd map_gallery && make
+
+notifications:
+  email:
+    recipients:
+      - gliese.q@gmail.com
+      - kotaimen.c@gmail.com
