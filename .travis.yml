@@ -3,13 +3,15 @@
 sudo: required
 dist: trusty
 
+language: node_js
+
 install:
   - sudo apt-get install -yq imagemagick python-lxml
   - sudo pip install -rrequirements.txt
   - sudo npm install -g carto
 
 script:
-  - cd map_gallery && make
+  - cd map_gallery; make
 
 notifications:
   email:
